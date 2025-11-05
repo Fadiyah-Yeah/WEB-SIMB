@@ -1,9 +1,9 @@
 <?php
 // Koneksi ke database
-$host = 'localhost';
+$host = '127.0.0.1';
 $dbname = 'gunung_berapi';
-$username = 'username';
-$password = 'password';
+$username = 'root'; 
+$password = ''; 
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
@@ -12,57 +12,78 @@ try {
     die("Koneksi database gagal: " . $e->getMessage());
 }
 
-// Query untuk mengambil data gunung berapi
-$sql = "SELECT * FROM volcanoes ORDER BY 
+// Query untuk mengambil data gunung berapi dengan erupsi terakhir
+$sql = "
+    SELECT 
+        g.id_gunung,
+        g.nama_gunung,
+        g.lokasi,
+        g.ketinggian,
+        g.status,
+        g.tingkat_aktivitas,
+        MAX(e.Tanggal_Erupsi) as last_eruption_date
+    FROM gunung g
+    LEFT JOIN erupsi e ON g.id_gunung = e.id_Gunung
+    GROUP BY g.id_gunung, g.nama_gunung, g.lokasi, g.ketinggian, g.status, g.tingkat_aktivitas
+    ORDER BY 
         CASE 
-            WHEN level = 'Level III' THEN 1
-            WHEN level = 'Level II' THEN 2
-            WHEN level = 'Level I' THEN 3
-            ELSE 4
-        END, name ASC";
+            WHEN g.status = 'Awas' THEN 1
+            WHEN g.status = 'Siaga' THEN 2
+            WHEN g.status = 'Waspada' THEN 3
+            WHEN g.status = 'Normal' THEN 4
+            ELSE 5
+        END, 
+        g.nama_gunung ASC
+";
+
 $stmt = $pdo->query($sql);
 $volcanoData = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Fungsi untuk menentukan warna status berdasarkan level
-function getStatusColor($level) {
-    switch($level) {
-        case 'Level III':
+function getStatusColor($status) {
+    switch($status) {
+        case 'Siaga':
+        case 'Awas':
             return 'bg-orange-500';
-        case 'Level II':
+        case 'Waspada':
             return 'bg-yellow-500';
-        case 'Level I':
+        case 'Normal':
             return 'bg-green-500';
         default:
             return 'bg-gray-500';
     }
 }
 
-// Fungsi untuk menentukan status berdasarkan level
-function getStatus($level) {
-    switch($level) {
-        case 'Level III':
-            return 'Siaga';
-        case 'Level II':
-            return 'Waspada';
-        case 'Level I':
-            return 'Normal';
+// Fungsi untuk menentukan level berdasarkan status
+function getLevel($status) {
+    switch($status) {
+        case 'Awas':
+            return 'Level IV';
+        case 'Siaga':
+            return 'Level III';
+        case 'Waspada':
+            return 'Level II';
+        case 'Normal':
+            return 'Level I';
         default:
             return 'Tidak Diketahui';
     }
 }
 
-// Fungsi untuk menentukan tingkat aktivitas
-function getActivity($level) {
-    switch($level) {
-        case 'Level III':
-            return 'Tinggi';
-        case 'Level II':
-            return 'Sedang';
-        case 'Level I':
-            return 'Rendah';
-        default:
-            return 'Tidak Diketahui';
+// Fungsi untuk memformat ketinggian
+function formatHeight($height) {
+    if ($height && is_numeric($height)) {
+        return number_format($height, 0, ',', '.') . ' m';
     }
+    return 'Tidak Diketahui';
+}
+
+// Fungsi untuk memformat tanggal erupsi
+function formatEruptionDate($date) {
+    if ($date && $date != '0000-00-00 00:00:00') {
+        return date('Y-m-d', strtotime($date));
+    }
+    return 'Tidak Diketahui';
 }
 ?>
 
@@ -122,9 +143,10 @@ function getActivity($level) {
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
                 <?php foreach ($volcanoData as $volcano): ?>
                     <?php
-                    $statusColor = getStatusColor($volcano['level']);
-                    $statusText = getStatus($volcano['level']);
-                    $activityText = getActivity($volcano['level']);
+                    $statusColor = getStatusColor($volcano['status']);
+                    $levelText = getLevel($volcano['status']);
+                    $heightText = formatHeight($volcano['ketinggian']);
+                    $eruptionDate = formatEruptionDate($volcano['last_eruption_date']);
                     ?>
                     
                     <div class="card group">
@@ -134,10 +156,10 @@ function getActivity($level) {
                                     <i data-lucide="mountain" class="w-6 h-6 text-primary"></i>
                                 </div>
                                 <div>
-                                    <h3 class="font-bold text-lg"><?php echo htmlspecialchars($volcano['name']); ?></h3>
+                                    <h3 class="font-bold text-lg"><?php echo htmlspecialchars($volcano['nama_gunung']); ?></h3>
                                     <p class="text-sm text-muted-foreground flex items-center gap-1">
                                         <i data-lucide="map-pin" class="w-3 h-3"></i>
-                                        <?php echo htmlspecialchars($volcano['location']); ?>
+                                        <?php echo htmlspecialchars($volcano['lokasi'] ?? 'Tidak Diketahui'); ?>
                                     </p>
                                 </div>
                             </div>
@@ -146,19 +168,19 @@ function getActivity($level) {
                         <div class="space-y-3">
                             <div class="flex items-center justify-between">
                                 <span class="text-sm text-muted-foreground">Ketinggian</span>
-                                <span class="font-semibold"><?php echo htmlspecialchars($volcano['height']); ?></span>
+                                <span class="font-semibold"><?php echo $heightText; ?></span>
                             </div>
 
                             <div class="flex items-center justify-between">
                                 <span class="text-sm text-muted-foreground">Status</span>
                                 <span class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 <?php echo $statusColor; ?> text-white">
-                                    <?php echo $statusText; ?>
+                                    <?php echo htmlspecialchars($volcano['status'] ?? 'Tidak Diketahui'); ?>
                                 </span>
                             </div>
 
                             <div class="flex items-center justify-between">
                                 <span class="text-sm text-muted-foreground">Level</span>
-                                <span class="font-semibold text-sm"><?php echo htmlspecialchars($volcano['level']); ?></span>
+                                <span class="font-semibold text-sm"><?php echo $levelText; ?></span>
                             </div>
 
                             <div class="flex items-center justify-between">
@@ -166,13 +188,13 @@ function getActivity($level) {
                                     <i data-lucide="trending-up" class="w-3 h-3"></i>
                                     Aktivitas
                                 </span>
-                                <span class="font-semibold text-sm"><?php echo $activityText; ?></span>
+                                <span class="font-semibold text-sm"><?php echo htmlspecialchars($volcano['tingkat_aktivitas'] ?? 'Tidak Diketahui'); ?></span>
                             </div>
 
                             <div class="pt-3 border-t">
                                 <div class="flex items-center gap-2 text-xs text-muted-foreground">
                                     <i data-lucide="calendar" class="w-3 h-3"></i>
-                                    <span>Erupsi terakhir: <?php echo htmlspecialchars($volcano['last_eruption']); ?></span>
+                                    <span>Erupsi terakhir: <?php echo $eruptionDate; ?></span>
                                 </div>
                             </div>
                         </div>
@@ -183,10 +205,32 @@ function getActivity($level) {
             <?php if (empty($volcanoData)): ?>
                 <div class="text-center py-12">
                     <i data-lucide="mountain" class="w-16 h-16 text-gray-400 mx-auto mb-4"></i>
-                    <h3 class="text-xl font-semibold text-gray-600 mb-2">Tidak ada data</h3>
+                    <h3 class="text-xl font-semibold text-gray-600 mb-2">Tidak ada data gunung berapi</h3>
                     <p class="text-gray-500">Data gunung berapi tidak ditemukan dalam database.</p>
+                    <div class="mt-6 p-4 bg-yellow-50 rounded-lg max-w-md mx-auto">
+                        <p class="text-sm text-yellow-800">
+                            <strong>Note:</strong> Database terdeteksi kosong. Silakan tambahkan data gunung berapi terlebih dahulu.
+                        </p>
+                    </div>
                 </div>
             <?php endif; ?>
+
+            <!-- Info tentang struktur data -->
+            <div class="mt-12 max-w-4xl mx-auto">
+                <div class="bg-blue-50 p-6 rounded-lg">
+                    <h3 class="font-semibold text-blue-900 mb-3">Informasi Database</h3>
+                    <div class="grid md:grid-cols-2 gap-4 text-sm text-blue-800">
+                        <div>
+                            <p><strong>Tabel:</strong> gunung</p>
+                            <p><strong>Total Data:</strong> <?php echo count($volcanoData); ?> gunung</p>
+                        </div>
+                        <div>
+                            <p><strong>Status yang didukung:</strong> Normal, Waspada, Siaga, Awas</p>
+                            <p><strong>Terakhir diakses:</strong> <?php echo date('d-m-Y H:i:s'); ?></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
