@@ -49,8 +49,9 @@ $volcanoData = $stmt->fetchAll(PDO::FETCH_ASSOC);
 // Fungsi untuk menentukan warna status berdasarkan level
 function getStatusColor($level) {
     switch($level) {
-        case 'Level III':
         case 'Level IV':
+            return 'bg-red-500';
+        case 'Level III':
             return 'bg-orange-500';
         case 'Level II':
             return 'bg-yellow-500';
