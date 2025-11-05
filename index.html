@@ -1,213 +1,25 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" data-theme="day">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MagmaCare - Sistem Informasi Gunung</title>
-    <style>
-        /* Reset dan variabel CSS */
-        :root {
-            --background: 0 0% 100%;
-            --foreground: 222.2 84% 4.9%;
-            --primary: 221.2 83.2% 53.3%;
-            --primary-foreground: 210 40% 98%;
-            --muted-foreground: 215.4 16.3% 46.9%;
-            --border: 214.3 31.8% 91.4%;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        }
-
-        body {
-            color: hsl(var(--foreground));
-            background-color: hsl(var(--background));
-            line-height: 1.5;
-            padding-top: 80px; /* Untuk mengkompensasi navbar fixed */
-        }
-
-        /* Navbar Styles */
-        nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 50;
-            transition: all 0.3s ease;
-        }
-
-        nav.scrolled {
-            background-color: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(8px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 1rem;
-        }
-
-        .nav-content {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            height: 80px;
-        }
-
-        /* Logo Styles */
-        .logo-btn {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: none;
-            border: none;
-            cursor: pointer;
-        }
-
-        .logo-btn:hover .logo-icon {
-            transform: scale(1.1);
-        }
-
-        .logo-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            background-color: hsl(var(--primary));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: transform 0.2s ease;
-        }
-
-        .logo-text {
-            display: none;
-        }
-
-        @media (min-width: 640px) {
-            .logo-text {
-                display: block;
-            }
-        }
-
-        .logo-title {
-            font-weight: bold;
-            font-size: 1.125rem;
-        }
-
-        .logo-subtitle {
-            font-size: 0.75rem;
-            color: hsl(var(--muted-foreground));
-        }
-
-        /* Navigation Links */
-        .nav-links {
-            display: none;
-            align-items: center;
-            gap: 0.25rem;
-        }
-
-        @media (min-width: 768px) {
-            .nav-links {
-                display: flex;
-            }
-        }
-
-        .nav-btn {
-            background: none;
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 0.375rem;
-            cursor: pointer;
-            color: hsl(var(--foreground));
-            transition: color 0.2s ease;
-        }
-
-        .nav-btn:hover {
-            color: hsl(var(--primary));
-        }
-
-        /* CTA Button */
-        .cta-btn {
-            display: none;
-            background-color: hsl(var(--primary));
-            color: hsl(var(--primary-foreground));
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 0.375rem;
-            cursor: pointer;
-            font-weight: 500;
-            transition: background-color 0.2s ease;
-        }
-
-        .cta-btn:hover {
-            background-color: hsl(221.2 83.2% 43.3%);
-        }
-
-        @media (min-width: 640px) {
-            .cta-btn {
-                display: block;
-            }
-        }
-
-        /* Section Styles */
-        section {
-            min-height: 100vh;
-            padding: 2rem 1rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-        }
-
-        section h2 {
-            font-size: 2.25rem;
-            margin-bottom: 1rem;
-        }
-
-        section p {
-            max-width: 600px;
-            margin-bottom: 1.5rem;
-        }
-
-        #beranda {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-        }
-
-        #tentang-erupsi {
-            background-color: #f8f9fa;
-        }
-
-        #data-gunung {
-            background-color: #e9ecef;
-        }
-
-        #mitigasi {
-            background-color: #f8f9fa;
-        }
-
-        #dampak {
-            background-color: #e9ecef;
-        }
-
-        #kontak {
-            background-color: #f8f9fa;
-        }
-    </style>
+    <link rel="stylesheet" href="index.css">
 </head>
 <body>
+    <!-- Theme Toggle -->
+    <div class="theme-toggle-container">
+        <div class="theme-toggle" onclick="toggleTheme()"></div>
+    </div>
+
     <!-- Navbar -->
     <nav id="navbar">
         <div class="container">
             <div class="nav-content">
                 <!-- Logo -->
-                <button class="logo-btn" onclick="scrollToSection('#')">
+                <button class="logo-btn" onclick="scrollToSection('#beranda')">
                     <div class="logo-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary-foreground">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="m8 3 4 8 5-5 5 15H2L8 3z"></path>
                         </svg>
                     </div>
@@ -219,83 +31,178 @@
 
                 <!-- Navigation Links -->
                 <div class="nav-links">
-                    <button class="nav-btn" onclick="scrollToSection('#')">Beranda</button>
+                    <button class="nav-btn" onclick="scrollToSection('#beranda')">Beranda</button>
                     <button class="nav-btn" onclick="scrollToSection('#tentang-erupsi')">Tentang Erupsi</button>
                     <button class="nav-btn" onclick="scrollToSection('#data-gunung')">Data Gunung</button>
-                    <button class="nav-btn" onclick="scrollToSection('#mitigasi')">Mitigasi</button>
-                    <button class="nav-btn" onclick="scrollToSection('#dampak')">Dampak</button>
+                    <button class="nav-btn" onclick="scrollToSection('mitigasi.php')">Mitigasi</button>
+                    <button class="nav-btn" onclick="scrollToSection('')">Dampak</button>
                     <button class="nav-btn" onclick="scrollToSection('#kontak')">Kontak</button>
                 </div>
 
                 <!-- CTA Button -->
-                <button class="cta-btn" onclick="scrollToSection('#kontak')">Hubungi Kami</button>
+                <button class="cta-btn" onclick="scrollToSection('')">Log-In Admin</button>
             </div>
         </div>
     </nav>
 
-    <!-- Sections -->
-    <section id="beranda">
-        <h2>Selamat Datang di MagmaCare</h2>
-        <p>Sistem informasi terpadu untuk pemantauan dan mitigasi bencana gunung berapi di Indonesia.</p>
-        <button class="cta-btn" onclick="scrollToSection('#tentang-erupsi')">Pelajari Lebih Lanjut</button>
-    </section>
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section id="beranda" class="hero-section">
+            <div class="container">
+                <h1 class="hero-title">Selamat Datang di MagmaCare</h1>
+                <p class="hero-description">
+                    Sistem informasi terpadu untuk pemantauan dan mitigasi bencana gunung berapi di Indonesia.
+                </p>
+                <button class="cta-btn hero-cta" onclick="scrollToSection('#tentang-erupsi')">
+                    Pelajari Lebih Lanjut
+                </button>
+                <div class="scroll-indicator">↓</div>
+            </div>
+        </section>
 
-    <section id="tentang-erupsi">
-        <h2>Tentang Erupsi</h2>
-        <p>Erupsi gunung berapi adalah peristiwa alam yang terjadi ketika material dari dalam bumi keluar ke permukaan. Indonesia memiliki 127 gunung berapi aktif yang tersebar di seluruh kepulauan.</p>
-    </section>
+        <!-- About Eruption Section -->
+        <section id="tentang-erupsi" class="content-section alt-bg">
+            <div class="container">
+                <h2>Tentang Erupsi</h2>
+                <p>
+                    Erupsi gunung berapi adalah peristiwa alam yang terjadi ketika material dari dalam bumi keluar ke permukaan. 
+                    Indonesia memiliki 127 gunung berapi aktif yang tersebar di seluruh kepulauan.
+                </p>
+            </div>
+        </section>
 
-    <section id="data-gunung">
-        <h2>Data Gunung</h2>
-        <p>Kami menyediakan data real-time dan historis tentang aktivitas gunung berapi di Indonesia untuk membantu analisis dan pengambilan keputusan.</p>
-    </section>
+        <!-- Data Gunung Section -->
+        <section id="data-gunung" class="content-section">
+            <div class="container">
+                <h2>Data Gunung</h2>
+                <p>
+                    Kami menyediakan data real-time dan historis tentang aktivitas gunung berapi di Indonesia 
+                    untuk membantu analisis dan pengambilan keputusan.
+                </p>
+            </div>
+        </section>
 
-    <section id="mitigasi">
-        <h2>Mitigasi</h2>
-        <p>Pelajari langkah-langkah yang dapat dilakukan untuk mengurangi risiko bencana erupsi gunung berapi, baik sebelum, selama, maupun setelah kejadian.</p>
-    </section>
+        <!-- Mitigasi Section -->
+        <section id="mitigasi" class="content-section alt-bg">
+            <div class="container">
+                <h2>Mitigasi</h2>
+                <p>
+                    Pelajari langkah-langkah yang dapat dilakukan untuk mengurangi risiko bencana erupsi gunung berapi, 
+                    baik sebelum, selama, maupun setelah kejadian.
+                </p>
+            </div>
+        </section>
 
-    <section id="dampak">
-        <h2>Dampak</h2>
-        <p>Erupsi gunung berapi dapat memberikan dampak signifikan terhadap lingkungan, ekonomi, dan masyarakat sekitar. Pahami dampaknya untuk persiapan yang lebih baik.</p>
-    </section>
+        <!-- Dampak Section -->
+        <section id="dampak" class="content-section">
+            <div class="container">
+                <h2>Dampak</h2>
+                <p>
+                    Erupsi gunung berapi dapat memberikan dampak signifikan terhadap lingkungan, ekonomi, dan masyarakat sekitar. 
+                    Pahami dampaknya untuk persiapan yang lebih baik.
+                </p>
+            </div>
+        </section>
 
-    <section id="kontak">
-        <h2>Kontak</h2>
-        <p>Hubungi kami untuk informasi lebih lanjut atau bantuan teknis terkait sistem informasi gunung berapi.</p>
-        <button class="cta-btn">Kirim Pesan</button>
-    </section>
+        <!-- Kontak Section -->
+        <section id="kontak" class="content-section alt-bg">
+            <div class="container">
+                <h2>Kontak</h2>
+                <p>
+                    Hubungi kami untuk informasi lebih lanjut atau bantuan teknis terkait sistem informasi gunung berapi.
+                </p>
+                <button class="cta-btn" onclick="showContactForm()">Kirim Pesan</button>
+            </div>
+        </section>
+    </main>
 
-    <script>
-        // Fungsi untuk scroll ke section
-        function scrollToSection(href) {
-            if (href === '#') {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            } else {
-                const element = document.querySelector(href);
-                if (element) {
-                    element.scrollIntoView({ behavior: 'smooth' });
-                }
-            }
-        }
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <!-- Brand Section -->
+                <div class="brand-section">
+                    <div class="brand-logo">
+                        <div class="logo-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="m8 3 4 8 5-5 5 15H2L8 3z"></path>
+                            </svg>
+                        </div>
+                        <div class="brand-text">
+                            <h3>MagmaCare</h3>
+                            <p>Sistem Informasi Gunung</p>
+                        </div>
+                    </div>
+                    <p class="brand-description">
+                        Platform informasi dan mitigasi bencana gunung berapi untuk Indonesia yang lebih siap dan tangguh.
+                    </p>
+                </div>
 
-        // Efek scroll pada navbar
-        window.addEventListener('scroll', function() {
-            const navbar = document.getElementById('navbar');
-            if (window.scrollY > 20) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
-        });
+                <!-- Quick Links -->
+                <div class="footer-section">
+                    <h4>Navigasi</h4>
+                    <ul class="footer-links">
+                        <li><a href="#beranda">Beranda</a></li>
+                        <li><a href="#data-gunung">Data Gunung</a></li>
+                        <li><a href="#mitigasi">Mitigasi</a></li>
+                        <li><a href="#kontak">Kontak</a></li>
+                    </ul>
+                </div>
 
-        // Inisialisasi navbar saat halaman dimuat
-        document.addEventListener('DOMContentLoaded', function() {
-            const navbar = document.getElementById('navbar');
-            if (window.scrollY > 20) {
-                navbar.classList.add('scrolled');
-            }
-        });
-    </script>
+                <!-- Resources -->
+                <div class="footer-section">
+                    <h4>Sumber Daya</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Panduan Evakuasi</a></li>
+                        <li><a href="#">Edukasi Bencana</a></li>
+                        <li><a href="#">Data & Statistik</a></li>
+                        <li><a href="#">FAQ</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact -->
+                <div class="footer-section">
+                    <h4>Kontak</h4>
+                    <ul class="footer-links">
+                        <li>Email: info@magmacare.id</li>
+                        <li>Telp: (021) 1234-5678</li>
+                        <li>Darurat: 112</li>
+                        <li>PVMBG: (022) 720-2564</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Footer Bottom -->
+            <div class="footer-bottom">
+                <p>&copy; <span id="currentYear">2024</span> MagmaCare. Sistem Informasi & Mitigasi Gunung Berapi Indonesia.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Contact Form Modal -->
+    <div id="contactModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeContactForm()">&times;</span>
+            <h3>Hubungi Kami</h3>
+            <form id="contactForm">
+                <div class="form-group">
+                    <label for="name">Nama</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">Pesan</label>
+                    <textarea id="message" name="message" rows="5" required></textarea>
+                </div>
+                <button type="submit" class="cta-btn">Kirim Pesan</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
