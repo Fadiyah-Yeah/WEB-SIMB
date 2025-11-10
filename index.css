@@ -1,5 +1,12 @@
-/* CSS GABUNGAN UNTUK SEMUA HALAMAN */
-/* Reset dan variabel CSS */
+/* =================================================================
+   CSS GABUNGAN UNTUK SEMUA HALAMAN 
+   Style untuk komponen yang digunakan di seluruh website MagmaCare
+   ================================================================= */
+
+/* CSS Variables & Reset
+   ------------------------------
+   Variabel warna, ukuran dan reset default styling browser
+   Memudahkan konsistensi warna dan spacing di seluruh website */
 :root {
     --primary: #e43b3b;
     --primary-dark: #c53030;
@@ -28,19 +35,28 @@ body {
     padding-top: 80px;
 }
 
-/* Container */
+/* Container
+   ------------------------------
+   Wrapper utama untuk membatasi lebar konten
+   dan memberikan padding konsisten di desktop/mobile */
 .container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 1.5rem;
 }
 
-/* ===== NAVBAR & FOOTER (UMUM UNTUK SEMUA HALAMAN) ===== */
+/* =================================================================
+   NAVBAR & FOOTER (UMUM UNTUK SEMUA HALAMAN)
+   Style untuk navigasi utama dan footer yang konsisten di semua halaman
+   ================================================================= */
 
-/* Navbar Styles */
-/* ===== PERBAIKAN NAVBAR ===== */
-
-/* Navbar Styles */
+/* Navbar Styles
+   ------------------------------
+   Navigasi utama website dengan:
+   - Fixed positioning di atas
+   - Animasi scroll
+   - Logo & menu responsif
+   - Login button */
 nav {
     position: fixed;
     top: 0;
@@ -67,7 +83,12 @@ nav.scrolled {
     gap: 2rem;
 }
 
-/* Logo Styles - PERBAIKAN */
+/* Logo Styles 
+   ------------------------------
+   Styling untuk logo MagmaCare:
+   - Animasi hover
+   - Ikon merah dengan background putih
+   - Text logo dengan subtitle */
 .logo-btn {
     display: flex;
     align-items: center;
@@ -126,7 +147,12 @@ nav.scrolled {
     line-height: 1.2;
 }
 
-/* Navigation Links */
+/* Navigation Links 
+   ------------------------------
+   Menu navigasi utama:
+   - Responsif (muncul di desktop, hidden di mobile)
+   - Hover effect dengan garis merah
+   - Spacing konsisten antar item */
 .nav-links {
     display: none;
     align-items: center;
@@ -223,7 +249,13 @@ nav.scrolled {
     color: var(--foreground);
 }
 
-/* Footer Styles */
+/* Footer Component
+   ------------------------------
+   Footer website dengan grid layout:
+   - 4 kolom di desktop, 1 kolom di mobile
+   - Branding section dengan logo
+   - Quick links & contact info
+   - Copyright di bawah */
 .site-footer {
     background-color: var(--section-bg-light);
     padding: 4rem 0 2rem;
@@ -318,7 +350,12 @@ nav.scrolled {
 
 /* ===== STYLING UNTUK INDEX.HTML ===== */
 
-/* Section Styles untuk Index */
+/* Section Styles untuk Index 
+   ------------------------------
+   Style dasar untuk setiap section di halaman:
+   - Padding & margin konsisten
+   - Centered content
+   - Responsive pada berbagai ukuran layar */
 section {
     padding: 4rem 1rem;
     display: flex;
@@ -360,6 +397,45 @@ section {
 .info-cards {
     padding: 5rem 0;
     background-color: var(--background);
+}
+
+/* Info Box Component
+   ------------------------------
+   Box dengan background abu-abu untuk konten informatif:
+   - Shadow subtle untuk depth
+   - Border radius konsisten
+   - Padding yang nyaman untuk dibaca */
+.info-box {
+    background-color: #f3f6f9; /* light grey */
+    padding: 2rem;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    box-shadow: 0 6px 18px rgba(15,23,42,0.04);
+}
+
+/* Image Box Component
+   ------------------------------
+   Container untuk gambar dan diagram:
+   - Background putih dengan border halus
+   - Responsive image sizing
+   - Margin atas untuk spacing dari text
+   - Shadow ringan untuk visual hierarchy */
+.image-box {
+    background-color: #ffffff;
+    padding: 1rem;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    box-shadow: 0 6px 18px rgba(15,23,42,0.03);
+    margin-top: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.image-box img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 8px;
 }
 
 .info-cards .container h2 {
@@ -471,9 +547,17 @@ section {
     transform: translateY(-2px);
 }
 
-/* ===== STYLING UNTUK DAMPAK.HTML ===== */
+/* =================================================================
+   STYLING UNTUK DAMPAK.HTML
+   Styles khusus untuk halaman dampak letusan gunung berapi
+   ================================================================= */
 
-/* Dampak Section Styles */
+/* Dampak Section Styles 
+   ------------------------------
+   Layout dan styling untuk section dampak:
+   - Background gradient subtle
+   - Full height section
+   - Centered content dengan max-width */
 .dampak-section {
     padding: 5rem 1rem;
     background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
@@ -520,7 +604,13 @@ section {
     }
 }
 
-/* Impact Card */
+/* Impact Card Component
+   ------------------------------
+   Card untuk menampilkan informasi dampak:
+   - Hover effect dengan shadow
+   - Border merah di atas
+   - Padding konsisten
+   - Responsive layout */
 .impact-card {
     background: var(--card-bg);
     border-radius: 1rem;
@@ -641,9 +731,17 @@ section {
     transform: translateY(-2px);
 }
 
-/* ===== STYLING RESPONSIVE UNTUK SEMUA HALAMAN ===== */
+/* =================================================================
+   STYLING RESPONSIVE UNTUK SEMUA HALAMAN
+   Media queries dan adjustments untuk berbagai ukuran layar
+   ================================================================= */
 
-/* Responsive adjustments untuk Index */
+/* Responsive Mobile & Tablet
+   ------------------------------
+   Penyesuaian untuk layar kecil:
+   - Font size yang lebih kecil
+   - Padding/margin yang lebih compact
+   - Layout stack untuk mobile */
 @media (max-width: 768px) {
     #beranda h2 {
         font-size: 2.25rem;
@@ -708,4 +806,11 @@ a:focus-visible {
 
 .mb-4 {
     margin-bottom: 2rem;
+}
+
+/* Pastikan scroll selalu aktif */
+html, body {
+    min-height: 100vh;
+    height: auto;
+    overflow-y: auto;
 }
