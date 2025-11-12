@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" data-theme="day">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,37 +7,49 @@
     <link href="index.css" rel="stylesheet">
 </head>
 <body>
+    <!-- Theme Toggle -->
+    <div class="theme-toggle-container">
+        <div class="theme-toggle" onclick="toggleTheme()"></div>
+    </div>
+
     <!-- Navbar -->
     <nav id="navbar">
         <div class="container">
             <div class="nav-content">
                 <!-- Logo -->
-                <button class="logo-btn" onclick="scrollToSection('#')">
-                    <div class="logo-icon" style="background-color: #e43b3b;">
+                <button class="logo-btn" onclick="scrollToSection('#beranda')">
+                    <div class="logo-icon">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="m8 3 4 8 5-5 5 15H2L8 3z"></path>
                         </svg>
                     </div>
                     <div class="logo-text">
-                        <a href="index.html" onclick="event.stopPropagation(); window.location.href='index.html';" style="text-decoration:none;display:block;">
-                            <h1 class="logo-title" style="color: #e43b3b;">MagmaCare</h1>
-                            <p class="logo-subtitle">Sistem Informasi Gunung</p>
-                        </a>
+                        <h1 class="logo-title">MagmaCare</h1>
+                        <p class="logo-subtitle">Sistem Informasi Gunung</p>
                     </div>
                 </button>
 
                 <!-- Navigation Links -->
                 <div class="nav-links">
+<<<<<<< HEAD
                     <button class="nav-btn" onclick="scrollToSection('#')">Beranda</button>
                     <button class="nav-btn" onclick="location.href='infogunung.php'">Informasi Gunung</button>
                     <button class="nav-btn" onclick="location.href='pengertian.html'">Pengertian Gunung & Jenis</button>
                     <button class="nav-btn" onclick="location.href='mitigasi.html'">Mitigasi</button>
                     <button class="nav-btn" onclick="location.href='dampak.html'">Dampak</button>
                     <button class="nav-btn" onclick="scrollToSection('#kontak')">Kontak</button>
+=======
+                    <button class="nav-btn" onclick="scrollToSection('#beranda')">Beranda</button>
+                    <a class="nav-btn" href="infogunung.php">Informasi Gunung</a>
+                    <a class="nav-btn" href="pengertian.html">Pengertian Gunung & Jenis</a>
+                    <a class="nav-btn" href="MITIGASI/mitigasi.html">Mitigasi</a>
+                    <a class="nav-btn" href="dampak.html">Dampak</a>
+                    <button class="nav-btn" onclick="scrollToSection('')"></button>
+>>>>>>> 3628f924355a62bc7bd0b56687c49350329fc90d
                 </div>
 
                 <!-- Login Button -->
-                <button class="cta-btn" onclick="location.href='login.html'">Login</button>
+                <a class="cta-btn" href="CRUD/login.php">Login</a>
             </div>
         </div>
     </nav>
@@ -60,28 +72,29 @@
         </div>
 
         <div class="cards-grid">
-                <div class="info-card">
-                    <div class="card-icon" style="background: #ffebee;">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#e43b3b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="m8 3 4 8 5-5 5 15H2L8 3z"/>
-                        </svg>
-                    </div>
-                    <h3>Informasi Gunung</h3>
-                    <p>Data lengkap tentang gunung berapi di Indonesia, termasuk lokasi, ketinggian, dan status aktivitas.</p>
-                    <button onclick="location.href='infogunung.php'" class="card-btn">Selengkapnya</button>
+            <div class="info-card">
+                <div class="card-icon" style="background: #ffebee;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#e43b3b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m8 3 4 8 5-5 5 15H2L8 3z"/>
+                    </svg>
                 </div>
+                <h3>Informasi Gunung</h3>
+                <p>Data lengkap tentang gunung berapi di Indonesia, termasuk lokasi, ketinggian, dan status aktivitas.</p>
+                <a href="info_gunung.php" class="card-btn">Selengkapnya</a>
+            </div>
 
-                <div class="info-card">
-                    <div class="card-icon" style="background: #fce4ec;">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#d81b60" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M12 2v20M2 12h20"/>
-                        </svg>
-                    </div>
-                    <h3>Dampak Erupsi</h3>
-                    <p>Memahami berbagai dampak erupsi gunung berapi terhadap lingkungan, sosial, dan ekonomi masyarakat.</p>
-                    <button onclick="location.href='dampak.html'" class="card-btn">Selengkapnya</button>
+            <div class="info-card">
+                <div class="card-icon" style="background: #fce4ec;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#d81b60" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2v20M2 12h20"/>
+                    </svg>
                 </div>
+                <h3>Dampak Erupsi</h3>
+                <p>Memahami berbagai dampak erupsi gunung berapi terhadap lingkungan, sosial, dan ekonomi masyarakat.</p>
+                <a href="dampak.html" class="card-btn">Selengkapnya</a>
+            </div>
 
+<<<<<<< HEAD
                 <div class="info-card">
                     <div class="card-icon" style="background: #e3f2fd;">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1976d2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -91,26 +104,36 @@
                     <h3>Mitigasi Bencana</h3>
                     <p>Langkah-langkah dan strategi dalam menghadapi dan mengurangi risiko bencana gunung berapi.</p>
                     <button onclick="location.href='mitigasi.html'" class="card-btn">Selengkapnya</button>
+=======
+            <div class="info-card">
+                <div class="card-icon" style="background: #e3f2fd;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1976d2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/>
+                    </svg>
+>>>>>>> 3628f924355a62bc7bd0b56687c49350329fc90d
                 </div>
+                <h3>Mitigasi Bencana</h3>
+                <p>Langkah-langkah dan strategi dalam menghadapi dan mengurangi risiko bencana gunung berapi.</p>
+                <a href="MITIGASI/mitigasi.html" class="card-btn">Selengkapnya</a>
+            </div>
 
-                <div class="info-card">
-                    <div class="card-icon" style="background: #e8f5e9;">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#388e3c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="10"/>
-                            <path d="M12 16v-4M12 8h.01"/>
-                        </svg>
-                    </div>
-                    <h3>Pengertian & Jenis</h3>
-                    <p>Memahami dasar-dasar vulkanologi dan berbagai jenis gunung berapi yang ada di Indonesia.</p>
-                    <button onclick="location.href='pengertian.html'" class="card-btn">Selengkapnya</button>
+            <div class="info-card">
+                <div class="card-icon" style="background: #e8f5e9;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#388e3c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M12 16v-4M12 8h.01"/>
+                    </svg>
                 </div>
+                <h3>Pengertian & Jenis</h3>
+                <p>Memahami dasar-dasar vulkanologi dan berbagai jenis gunung berapi yang ada di Indonesia.</p>
+                <a href="pengertian.html" class="card-btn">Selengkapnya</a>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="site-footer">
-                <div class="container">
+    <footer>
+        <div class="container">
             <div class="footer-grid">
                 <!-- Brand Section -->
                 <div class="brand-section">
@@ -134,10 +157,10 @@
                 <div class="footer-section">
                     <h4>Navigasi</h4>
                     <ul class="footer-links">
-                        <li><a href="#beranda">Beranda</a></li>
-                        <li><a href="#data-gunung">Data Gunung</a></li>
-                        <li><a href="#mitigasi">Mitigasi</a></li>
-                        <li><a href="#kontak">Kontak</a></li>
+                        <li><a href="">Informasi Gunung</a></li>
+                        <li><a href="dampak.html">Dampak Erupsi</a></li>
+                        <li><a href="MITIGASI/mitigasi.html">Mitigasi Bencana</a></li>
+                        <li><a href="">Pengertian & Jenis</a></li>
                     </ul>
                 </div>
 
@@ -145,10 +168,10 @@
                 <div class="footer-section">
                     <h4>Sumber Daya</h4>
                     <ul class="footer-links">
-                        <li><a href="#">Panduan Evakuasi</a></li>
-                        <li><a href="#">Edukasi Bencana</a></li>
-                        <li><a href="#">Data & Statistik</a></li>
-                        <li><a href="#">FAQ</a></li>
+                        <li><a href="MITIGASI/mitigasi.html">Panduan Evakuasi</a></li>
+                        <li><a href="MITIGASI/mitigasi.html">Edukasi Bencana</a></li>
+                        <li><a href="#data-gunung">Data & Statistik</a></li>
+                        <li><a href="#kontak">FAQ</a></li>
                     </ul>
                 </div>
 
@@ -156,7 +179,7 @@
                 <div class="footer-section">
                     <h4>Kontak</h4>
                     <ul class="footer-links">
-                        <li>Email: info@magmacare.id</li>
+                        <!-- <li>Email: info@magmacare.id</li> -->
                         <li>Telp: (021) 1234-5678</li>
                         <li>Darurat: 112</li>
                         <li>PVMBG: (022) 720-2564</li>
@@ -171,15 +194,28 @@
         </div>
     </footer>
 
+    <script src="script.js"></script>
     <script>
+        // Initialize theme when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeTheme();
+        });
+
         // Fungsi untuk scroll ke section
         function scrollToSection(href) {
-            if (href === '#') {
+            if (href === '#beranda') {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             } else {
                 const element = document.querySelector(href);
                 if (element) {
-                    element.scrollIntoView({ behavior: 'smooth' });
+                    const offset = 80;
+                    const elementPosition = element.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - offset;
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
                 }
             }
         }
