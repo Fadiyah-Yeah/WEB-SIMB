@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="day">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MagmaCare - Informasi Mitigasi Bencana Gunung Berapi</title>
+    <link rel="stylesheet" href="Styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    
+</head>
+<body>
+    <!-- Theme Toggle -->
+    <div class="theme-toggle-container">
+        <div class="theme-toggle" onclick="toggleTheme()"></div>
+    </div>
+
+    <!-- Navbar -->
+    <nav id="navbar">
+        <div class="container">
+            <div class="nav-content">
+                <!-- Logo -->
+                <a href="index.html" class="logo-btn">
+                    <div class="logo-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="m8 3 4 8 5-5 5 15H2L8 3z"></path>
+                        </svg>
+                    </div>
+                    <div class="logo-text">
+                        <h1 class="logo-title">MagmaCare</h1>
+                        <p class="logo-subtitle">Sistem Informasi Gunung</p>
+                    </div>
+                </a>
+
+                <!-- Navigation Links -->
+                <div class="nav-links">
+                    <a href="../index.html" class="nav-btn">Beranda</a>
+                    <a href="infogunung.php" class="nav-btn">Informasi Gunung</a>
+                    <a href="pengertian.html" class="nav-btn">Pengertian & Jenis</a>
+                    <a href="mitigasi.html" class="nav-btn">Mitigasi</a>
+                    <a href="dampak.html" class="nav-btn">Dampak</a>
+                    <a href="" class="nav-btn"></a>
+                </div>
+
+                <!-- Login Button -->
+                <a href="" class="cta-btn"></a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Halaman 1: Tentang Mitigasi -->
+    <section class="mitigasi-page page-1">
+        <div class="container">
+            <div class="page-content">
+                <h1 class="page-title">Tentang Mitigasi Gunung Meletus</h1>
+                <p class="page-description">Indonesia memiliki lebih dari 120 gunung api aktif. Memahami risiko dan persiapan yang tepat dapat menyelamatkan nyawa Anda dan orang-orang tercinta.</p>
+
+                <!-- Cards Section -->
+                <div class="cards-grid">
+                    <div class="info-card">
+                        <h3>Kenali Risiko</h3>
+                        <p>Pahami tanda-tanda aktivitas vulkanik dan zona bahaya di sekitar tempat tinggal Anda.</p>
+                    </div>
+                    
+                    <div class="info-card">
+                        <h3>Siapkan Diri</h3>
+                        <p>Buat rencana evakuasi keluarga dan siapkan tas darurat dengan perlengkapan penting.</p>
+                    </div>
+                    
+                    <div class="info-card">
+                        <h3>Selamatkan Sesama</h3>
+                        <p>Bantu tetangga yang membutuhkan bantuan khusus seperti lansia, anak-anak, dan penyandang disabilitas.</p>
+                    </div>
+                </div>
+
+                <!-- Separator -->
+                <div class="section-separator"></div>
+
+                <!-- Info Box -->
+                <div class="content-box">
+                    <h2>Apa Itu Gunung Meletus?</h2>
+                    <p>Letusan gunung berapi terjadi ketika magma (batuan cair dari dalam bumi) naik ke permukaan melalui retakan di kerak bumi. Letusan dapat menghasilkan berbagai ancaman seperti:</p>
+                    
+                    <div class="threats-grid">
+                        <div class="threat-item">
+                            <strong>Awan panas:</strong> Aliran gas panas dan material vulkanik yang bergerak sangat cepat
+                        </div>
+                        <div class="threat-item">
+                            <strong>Hujan abu:</strong> Abu vulkanik yang dapat menutupi area luas dan mengganggu pernapasan
+                        </div>
+                        <div class="threat-item">
+                            <strong>Lahar:</strong> Aliran lumpur panas yang dapat menghancurkan segala sesuatu di jalurnya
+                        </div>
+                        <div class="threat-item">
+                            <strong>Lontaran batu pijar:</strong> Batuan besar yang terlontar dari kawah
+                        </div>
+                    </div>
+                    
+                    <div class="fact-box">
+                        <strong>Fakta Penting:</strong> Indonesia berada di Cincin Api Pasifik dengan lebih dari 400 gunung api, 127 di antaranya masih aktif. Persiapan yang baik adalah kunci keselamatan.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Halaman 2: Langkah-Langkah Mitigasi -->
+    <section class="mitigasi-page page-2">
+        <div class="container">
+            <div class="page-content">
+                <h1 class="page-title">Langkah-Langkah Mitigasi</h1>
+                <p class="page-description">Ketahui apa yang harus dilakukan sebelum, saat, dan setelah letusan gunung berapi untuk melindungi diri dan keluarga Anda.</p>
+
+                <!-- Separator -->
+                <div class="section-separator"></div>
+
+                <!-- Timeline Sections dalam Grid -->
+                <div class="timeline-grid">
+                    <div class="timeline-box">
+                        <h2>Sebelum Letusan</h2>
+                        <ul class="timeline-list">
+                            <li>Kenali jalur evakuasi dan lokasi shelter terdekat</li>
+                            <li>Siapkan tas darurat dengan makanan, air, obat-obatan, dan dokumen penting</li>
+                            <li>Buat rencana komunikasi keluarga jika terpisah</li>
+                            <li>Pantau informasi dari PVMBG dan BMKG secara berkala</li>
+                            <li>Ikuti sosialisasi dan simulasi evakuasi di lingkungan Anda</li>
+                            <li>Simpan masker atau kain untuk melindungi dari abu vulkanik</li>
+                            <li>Rencanakan penempatan pemukiman agar tidak berada di daerah rawan</li>
+                        </ul>
+                    </div>
+
+                    <div class="timeline-box">
+                        <h2>Saat Letusan</h2>
+                        <ul class="timeline-list">
+                            <li>Tetap tenang dan dengarkan instruksi dari petugas berwenang</li>
+                            <li>Segera evakuasi jika ada perintah dari pihak berwenang</li>
+                            <li>Gunakan masker atau kain basah untuk melindungi pernapasan</li>
+                            <li>Kenakan pakaian tertutup seperti baju dan celana panjang</li>
+                            <li>Hindari area dengan aliran lava, lahar, dan awan panas</li>
+                            <li>Tutup semua pintu dan jendela jika tidak bisa evakuasi</li>
+                            <li>Jauhi area sungai yang berpotensi dilalui lahar</li>
+                            <li>Matikan listrik dan gas sebelum meninggalkan rumah</li>
+                        </ul>
+                    </div>
+
+                    <div class="timeline-box">
+                        <h2>Setelah Letusan</h2>
+                        <ul class="timeline-list">
+                            <li>Tetap di shelter sampai ada instruksi aman untuk pulang</li>
+                            <li>Batasi aktivitas di luar ruangan</li>
+                            <li>Tetap waspada terhadap bahasa sekunder seperti lahar dingin</li>
+                            <li>Periksa kondisi rumah dari kerusakan dan bahaya</li>
+                            <li>Bersihkan abu vulkanik dengan hati-hati menggunakan masker</li>
+                            <li>Hindari menggunakan kendaraan jika jalanan tertutup abu tebal</li>
+                            <li>Periksa kondisi air dan makanan, jangan konsumsi yang terkontaminasi</li>
+                            <li>Laporkan kerusakan infrastruktur kepada pihak berwenang</li>
+                            <li>Ikuti pemeriksaan kesehatan jika mengalami gangguan pernapasan</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Halaman 3: Checklist Tas Evakuasi -->
+    <section class="mitigasi-page page-3">
+        <div class="container">
+            <div class="page-content">
+                <h1 class="page-title">Checklist Tas Evakuasi</h1>
+                <p class="page-description">Siapkan tas darurat dengan perlengkapan berikut. Cetak checklist ini dan tempel di tempat yang mudah dilihat.</p>
+
+                <!-- Separator -->
+                <div class="section-separator"></div>
+
+                <!-- Checklist Content -->
+                <div class="checklist-content">
+                    <h2 class="checklist-main-title">Daftar Periksa Evakuasi</h2>
+
+                    <div class="checklist-grid">
+                        <div class="checklist-category">
+                            <h3>Dokumen Penting</h3>
+                            <ul class="checklist-items">
+                                <li>
+                                    <label class="checklist-label">
+                                        <input type="checkbox" class="checklist-checkbox">
+                                        <span class="checkmark"></span>
+                                        KTP dan kartu keluarga (dalam plastik kedap air)
+                                    </label>
+                                </li>
+                                <li>
+                                    <label class="checklist-label">
+                                        <input type="checkbox" class="checklist-checkbox">
+                                        <span class="checkmark"></span>
+                                        Buku tabungan dan dokumen asuransi
+                                    </label>
+                                </li>
+                                <li>
+                                    <label class="checklist-label">
+                                        <input type="checkbox" class="checklist-checkbox">
+                                        <span class="checkmark"></span>
+                                        Ijazah dan sertifikat penting
+                                    </label>
+                                </li>
+                                <li>
+                                    <label class="checklist-label">
+                                        <input type="checkbox" class="checklist-checkbox">
+                                        <span class="checkmark"></span>
+                                        Foto keluarga (backup digital)
+                                    </label>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="checklist-category">
+                            <h3>Perlengkapan Medis</h3>
+                            <ul class="checklist-items">
+                                <li>
+                                    <label class="checklist-label">
+                                        <input type="checkbox" class="checklist-checkbox">
+                                        <span class="checkmark"></span>
+                                        Obat-obatan rutin keluarga
+                                    </label>
+                                </li>
+                                <li>
+                                    <label class="checklist-label">
+                                        <input type="checkbox" class="checklist-checkbox">
+                                        <span class="checkmark"></span>
+                                        Kotak P3K lengkap
+                                    </label>
+                                </li>
+                                <li>
+                                    <label class="checklist-label">
+                                        <input type="checkbox" class="checklist-checkbox">
+                                        <span class="checkmark"></span>
+                                        Masker N95 atau masker kain
+                                    </label>
+                                </li>
+                                <li>
+                                    <label class="checklist-label">
+                                        <input type="checkbox" class="checklist-checkbox">
+                                        <span class="checkmark"></span>
+                                        Hand sanitizer dan tisu basah
+                                    </label>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="checklist-category">
+                            <h3>Kebutuhan Dasar</h3>
+                            <ul class="checklist-items">
+                                <li>
+                                    <label class="checklist-label">
+                                        <input type="checkbox" class="checklist-checkbox">
+                                        <span class="checkmark"></span>
+                                        Air minum kemasan (minimal 3 liter/orang)
+                                    </label>
+                                </li>
+                                <li>
+                                    <label class="checklist-label">
+                                        <input type="checkbox" class="checklist-checkbox">
+                                        <span class="checkmark"></span>
+                                        Makanan tahan lama (Sarden, Biskuit)
+                                    </label>
+                                </li>
+                                <li>
+                                    <label class="checklist-label">
+                                        <input type="checkbox" class="checklist-checkbox">
+                                        <span class="checkmark"></span>
+                                        Pakaian ganti dan jas hujan
+                                    </label>
+                                </li>
+                                <li>
+                                    <label class="checklist-label">
+                                        <input type="checkbox" class="checklist-checkbox">
+                                        <span class="checkmark"></span>
+                                        Selimut atau sleeping bag
+                                    </label>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="checklist-category">
+                            <h3>Peralatan Penting</h3>
+                            <ul class="checklist-items">
+                                <li>
+                                    <label class="checklist-label">
+                                        <input type="checkbox" class="checklist-checkbox">
+                                        <span class="checkmark"></span>
+                                        Senter dan baterai cadangan
+                                    </label>
+                                </li>
+                                <li>
+                                    <label class="checklist-label">
+                                        <input type="checkbox" class="checklist-checkbox">
+                                        <span class="checkmark"></span>
+                                        Radio portable
+                                    </label>
+                                </li>
+                                <li>
+                                    <label class="checklist-label">
+                                        <input type="checkbox" class="checklist-checkbox">
+                                        <span class="checkmark"></span>
+                                        Power bank dan kabel charger
+                                    </label>
+                                </li>
+                                <li>
+                                    <label class="checklist-label">
+                                        <input type="checkbox" class="checklist-checkbox">
+                                        <span class="checkmark"></span>
+                                        Pisau serbaguna
+                                    </label>
+                                </li>
+                                <li>
+                                    <label class="checklist-label">
+                                        <input type="checkbox" class="checklist-checkbox">
+                                        <span class="checkmark"></span>
+                                        Peluit untuk sinyal darurat
+                                    </label>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Progress Section
+                    <div class="progress-section">
+                        <div class="progress-info">
+                            <h4>Progress Persiapan</h4>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="progressFill"></div>
+                            </div>
+                            <span class="progress-text" id="progressText">0% selesai</span>
+                        </div>
+                        <button class="reset-btn" onclick="resetChecklist()">Reset Checklist</button>
+                    </div> -->
+
+                    <!-- Tips Box -->
+                    <div class="tips-section">
+                        <h3>Tips Penting</h3>
+                        <ul class="tips-list">
+                            <li>Periksa dan perbarui isi tas setiap 6 bulan sekali</li>
+                            <li>Simpan tas di tempat yang mudah dijangkau</li>
+                            <li>Semua anggota keluarga harus tahu lokasi tas darurat</li>
+                            <li>Siapkan tas khusus untuk bayi atau anggota keluarga dengan kebutuhan khusus</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+   <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <!-- Brand Section -->
+                <div class="brand-section">
+                    <div class="brand-logo">
+                        <div class="logo-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="m8 3 4 8 5-5 5 15H2L8 3z"></path>
+                            </svg>
+                        </div>
+                        <div class="brand-text">
+                            <h3>MagmaCare</h3>
+                            <p>Sistem Informasi Gunung</p>
+                        </div>
+                    </div>
+                    <p class="brand-description">
+                        Platform informasi dan mitigasi bencana gunung berapi untuk Indonesia yang lebih siap dan tangguh.
+                    </p>
+                </div>
+
+                <!-- Quick Links -->
+                <div class="footer-section">
+                    <h4>Navigasi</h4>
+                    <ul class="footer-links">
+                        <li><a href="">Informasi Gunung</a></li>
+                        <li><a href="">Dampak Erupsi</a></li>
+                        <li><a href="MITIGASI/mitigasi.html">Mitigasi Bencana</a></li>
+                        <li><a href="">Pengertian & Jenis</a></li>
+                    </ul>
+                </div>
+
+                <!-- Resources -->
+                <div class="footer-section">
+                    <h4>Sumber Daya</h4>
+                    <ul class="footer-links">
+                        <li><a href="MITIGASI/mitigasi.html">Panduan Evakuasi</a></li>
+                        <li><a href="MITIGASI/mitigasi.html">Edukasi Bencana</a></li>
+                        <li><a href="#data-gunung">Data & Statistik</a></li>
+                        <li><a href="#kontak">FAQ</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact -->
+                <div class="footer-section">
+                    <h4>Kontak</h4>
+                    <ul class="footer-links">
+                        <!-- <li>Email: info@magmacare.id</li> -->
+                        <li>Telp: (021) 1234-5678</li>
+                        <li>Darurat: 112</li>
+                        <li>PVMBG: (022) 720-2564</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Footer Bottom -->
+            <div class="footer-bottom">
+                <p>&copy; <span id="currentYear">2024</span> MagmaCare. Sistem Informasi & Mitigasi Gunung Berapi Indonesia.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../script.js"></script>
+    <script>
+        // Initialize theme when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof initializeTheme === 'function') {
+                initializeTheme();
+            }
+            
+            // Print functionality
+            const printBtn = document.getElementById('printBtn');
+            if (printBtn) {
+                printBtn.addEventListener('click', function() {
+                    window.print();
+                });
+            }
+            
+            // Navbar scroll effect
+            window.addEventListener('scroll', function() {
+                const navbar = document.getElementById('navbar');
+                if (navbar && window.scrollY > 20) {
+                    navbar.classList.add('scrolled');
+                } else if (navbar) {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
