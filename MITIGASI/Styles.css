@@ -1,23 +1,27 @@
-/* ===== RESET & BASE STYLES ===== */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-}
-
-html {
-    scroll-behavior: smooth;
-}
-
+/* ===== PERBAIKAN GAP ANTARA NAVBAR DAN SECTION ===== */
 body {
     color: hsl(var(--foreground));
     background-color: hsl(var(--background));
     line-height: 1.5;
-    padding-top: 80px;
+    padding-top: 0 !important; /* HAPUS PADDING TOP */
+    margin: 0;
     min-height: 100vh;
 }
+
+/* Hapus margin/padding default dari semua element */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Section mitigasi pertama - HAPUS GAP */
+.mitigasi-page.page-1 {
+    padding-top: 80px !important; /* Sesuaikan dengan tinggi navbar */
+    min-height: 100vh;
+    margin-top: 0 !important;
+}
+
 
 /* ===== CSS VARIABLES ===== */
 :root {
@@ -30,9 +34,9 @@ body {
     --muted-foreground: 215.4 16.3% 46.9%;
     --border: 214.3 31.8% 91.4%;
     --card-bg: 0 0% 100%;
-    --nav-bg: rgba(255, 255, 255, 0.95);
+    --nav-bg: rgba(255, 255, 255, 0.95); 
     --footer-bg: 210 12% 96%;
-} 
+}
 
 [data-theme="night"] {
     --background: 222.2 84% 4.9%;
@@ -50,17 +54,16 @@ body {
 
 /* ===== LAYOUT COMPONENTS ===== */
 .container {
-    max-width: 1400px; /* Diperlebar dari 1200px */
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 0 2rem; /* Padding diperbesar */
-    width: 100%;
+    padding: 0 1rem;
 }
 
-/* ===== THEME TOGGLE ===== */
+/* Theme Toggle */
 .theme-toggle-container {
     position: fixed;
     top: 1.5rem;
-    right: 2rem; /* Diadjust untuk container yang lebih lebar */
+    right: 1.5rem;
     z-index: 1000;
     display: flex;
     align-items: center;
@@ -112,6 +115,7 @@ body {
     opacity: 0.7;
 }
 
+/* Night Mode State */
 [data-theme="night"] .theme-toggle {
     background: hsl(var(--border));
     border-color: hsl(var(--primary) / 0.5);
@@ -134,8 +138,7 @@ body {
     box-shadow: 0 0 15px hsl(var(--primary) / 0.3);
 }
 
-/* Navbar Styles */
-/* Navbar Styles */
+/* ===== NAVBAR STYLES ===== */
 nav {
     position: fixed;
     top: 0;
@@ -152,12 +155,6 @@ nav.scrolled {
     backdrop-filter: blur(20px);
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
     border-bottom: 1px solid hsl(var(--border));
-}
-
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 1rem;
 }
 
 .nav-content {
@@ -359,13 +356,128 @@ nav.scrolled {
     }
 }
 
-/* Hapus CTA Button styles karena tidak digunakan */
-/* .cta-btn { ... } */
+/* Theme Toggle */
+.theme-toggle-container {
+    position: fixed;
+    top: 1.5rem;
+    right: 1.5rem;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.theme-label {
+    font-size: 0.8rem;
+    color: hsl(var(--muted-foreground));
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.theme-toggle {
+    position: relative;
+    width: 60px;
+    height: 30px;
+    background: hsl(var(--border));
+    border-radius: 25px;
+    cursor: pointer;
+    border: 2px solid hsl(var(--border));
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.theme-toggle::before {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 22px;
+    height: 22px;
+    background: hsl(var(--primary));
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.theme-toggle::after {
+    content: '☀️';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 8px;
+    font-size: 12px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    opacity: 0.7;
+}
+
+/* Night Mode State */
+[data-theme="night"] .theme-toggle {
+    background: hsl(var(--border));
+    border-color: hsl(var(--primary) / 0.5);
+}
+
+[data-theme="night"] .theme-toggle::before {
+    transform: translateX(30px);
+    background: hsl(var(--primary));
+}
+
+[data-theme="night"] .theme-toggle::after {
+    content: '🌙';
+    left: 8px;
+    right: auto;
+    opacity: 1;
+}
+
+.theme-toggle:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px hsl(var(--primary) / 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .theme-toggle-container {
+        top: 1rem;
+        right: 1rem;
+    }
+    
+    .theme-label {
+        display: none;
+    }
+    
+    .nav-content {
+        flex-wrap: wrap;
+        height: auto;
+        padding: 1rem 0;
+    }
+    
+    .nav-links {
+        order: 3;
+        width: 100%;
+        justify-content: center;
+        margin-top: 1rem;
+        gap: 0.5rem;
+    }
+    
+    .nav-btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+    }
+}
+
+/* Body padding untuk mengkompensasi navbar fixed */
+body {
+    color: hsl(var(--foreground));
+    background-color: hsl(var(--background));
+    line-height: 1.5;
+    padding-top: 80px; /* Untuk mengkompensasi navbar fixed */
+}
 
 /* ===== MITIGASI PAGE STYLES ===== */
 .mitigasi-page {
     min-height: 100vh;
-    padding: 120px 0 60px;
+    padding: 80px 0 60px; /* Kurangi padding top dari 120px ke 80px */
     background: hsl(var(--background));
     border-bottom: 2px solid hsl(var(--border));
     display: flex;
@@ -373,12 +485,13 @@ nav.scrolled {
     justify-content: center;
 }
 
-.mitigasi-page:last-child {
-    border-bottom: none;
+.mitigasi-page:first-child {
+    padding-top: 60px; /* Lebih sedikit padding untuk section pertama */
+    min-height: calc(100vh - 70px); /* Kurangi height navbar */
 }
 
 .page-content {
-    max-width: 1400px; /* Diperlebar */
+    max-width: 1400px;
     margin: 0 auto;
     padding: 0 2rem;
     text-align: center;
@@ -386,21 +499,21 @@ nav.scrolled {
 }
 
 .page-title {
-    font-size: 3rem; /* Diperbesar */
+    font-size: 3rem;
     font-weight: 700;
     color: hsl(var(--foreground));
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem; /* Kurangi margin */
     text-align: center;
     line-height: 1.2;
 }
 
 .page-description {
-    font-size: 1.4rem; /* Diperbesar */
+    font-size: 1.4rem;
     color: hsl(var(--muted-foreground));
     line-height: 1.6;
-    margin-bottom: 4rem;
+    margin-bottom: 3rem; /* Kurangi margin */
     text-align: center;
-    max-width: 900px; /* Diperlebar */
+    max-width: 900px;
     margin-left: auto;
     margin-right: auto;
 }
