@@ -1,0 +1,263 @@
+/* Reset dan variabel CSS */
+:root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --primary: 0 72% 56%;  /* Warna merah MagmaCare */
+    --primary-dark: 0 72% 45%;
+    --primary-light: 0 72% 65%;
+    --primary-foreground: 0 0% 100%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --border: 214.3 31.8% 91.4%;
+    --card-bg: 0 0% 100%;
+    --nav-bg: rgba(255, 255, 255, 0.95);
+    --footer-bg: 210 12% 96%;
+}
+
+/* Night Mode Variables */
+[data-theme="night"] {
+    --background: 222.2 84% 4.9%;
+    --foreground: 0 0% 98%;
+    --primary: 0 72% 56%;
+    --primary-dark: 0 72% 45%;
+    --primary-light: 0 72% 65%;
+    --primary-foreground: 0 0% 100%;
+    --muted-foreground: 215.4 16.3% 56.9%;
+    --border: 214.3 31.8% 21.4%;
+    --card-bg: 222.2 84% 8%;
+    --nav-bg: rgba(15, 23, 42, 0.95);
+    --footer-bg: 222.2 84% 6%;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+body {
+    color: hsl(var(--foreground));
+    background-color: hsl(var(--background));
+    line-height: 1.5;
+    padding-top: 80px;
+}
+
+/* Container */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+/* Info Cards Section */
+.info-cards {
+    padding: 4rem 0;
+    background-color: hsl(var(--background));
+    transition: background-color 0.3s ease;
+}
+
+.info-cards h2 {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: hsl(var(--foreground));
+}
+
+.text-primary {
+    color: hsl(var(--primary));
+}
+
+.section-desc {
+    text-align: center;
+    color: hsl(var(--muted-foreground));
+    margin-bottom: 3rem;
+    font-size: 1.1rem;
+}
+
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 2rem;
+    padding: 1rem;
+}
+
+@media (min-width: 640px) {
+    .cards-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .cards-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.info-card {
+    background: hsl(var(--card-bg));
+    border-radius: 1rem;
+    padding: 2rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    transition: all 0.3s ease;
+    border: 1px solid hsl(var(--border));
+}
+
+.info-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.card-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+}
+
+.info-card h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: hsl(var(--foreground));
+    margin: 0;
+}
+
+.info-card p {
+    color: hsl(var(--muted-foreground));
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* Status Badge */
+.status-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 1rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+.status-level-4 {
+    background: hsl(var(--primary));
+    color: white;
+}
+
+.status-level-3 {
+    background: #f97316;
+    color: white;
+}
+
+.status-level-2 {
+    background: #eab308;
+    color: black;
+}
+
+.status-level-1 {
+    background: #22c55e;
+    color: white;
+}
+
+.status-unknown {
+    background: #6b7280;
+    color: white;
+}
+
+/* Card Content */
+.card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.card-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card-label {
+    color: hsl(var(--muted-foreground));
+    font-size: 0.9rem;
+}
+
+.card-value {
+    font-weight: 600;
+}
+
+.card-divider {
+    padding-top: 0.75rem;
+    border-top: 1px solid hsl(var(--border));
+}
+
+.card-footer {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    color: hsl(var(--muted-foreground));
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 3rem 0;
+}
+
+.empty-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 1rem;
+    background: hsl(var(--primary) / 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+}
+
+.empty-icon-inner {
+    width: 32px;
+    height: 32px;
+    background: hsl(var(--primary));
+    border-radius: 50%;
+}
+
+.empty-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: hsl(var(--foreground));
+    margin-bottom: 0.5rem;
+}
+
+.empty-desc {
+    color: hsl(var(--muted-foreground));
+    margin-bottom: 1.5rem;
+}
+
+.empty-note {
+    padding: 1rem;
+    background: #fef3c7;
+    border-radius: 0.5rem;
+    max-width: 28rem;
+    margin: 0 auto;
+}
+
+.empty-note p {
+    font-size: 0.875rem;
+    color: #92400e;
+    margin: 0;
+}
+
+[data-theme="night"] .empty-note {
+    background: #451a03;
+}
+
+[data-theme="night"] .empty-note p {
+    color: #fed7aa;
+}
