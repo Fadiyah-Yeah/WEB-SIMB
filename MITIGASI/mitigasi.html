@@ -10,44 +10,39 @@
     
 </head>
 <body>
-    <!-- Theme Toggle -->
-    <div class="theme-toggle-container">
-        <div class="theme-toggle" onclick="toggleTheme()"></div>
-    </div>
 
-    <!-- Navbar -->
     <nav id="navbar">
-        <div class="container">
-            <div class="nav-content">
-                <!-- Logo -->
-                <button class="logo-btn" onclick="window.location.href='../index.html'">
-                    <div class="logo-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="m8 3 4 8 5-5 5 15H2L8 3z"></path>
-                        </svg>
-                    </div>
-                    <div class="logo-text">
-                        <h1 class="logo-title">MagmaCare</h1>
-                        <p class="logo-subtitle">Sistem Informasi Gunung</p>
-                    </div>
-                </button>
-
-                <!-- Navigation Links -->
-                <div class="nav-links">
-                    <a href="../index.html" class="nav-btn">Beranda</a>
-                    <a href="../infogunung.php" class="nav-btn">Informasi Gunung</a>
-                    <a href="../pengertian.html" class="nav-btn">Pengertian & Jenis</a>
-                    <a href="mitigasi.html" class="nav-btn">Mitigasi</a>
-                    <a href="../dampak.html" class="nav-btn">Dampak</a>
-                    <a href="" class="nav-btn"></a>
+    <div class="container">
+        <div class="nav-content">
+            <!-- Logo di kiri -->
+            <a href="index.html" class="logo-btn">
+                <div class="logo-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m8 3 4 8 5-5 5 15H2L8 3z"></path>
+                    </svg>
                 </div>
+                <div class="logo-text">
+                    <h1 class="logo-title">MagmaCare</h1>
+                    <p class="logo-subtitle">Sistem Informasi Gunung</p>
+                </div>
+            </a>
 
-                <!-- Login Button -->
-                <a href="" class=""></a>
+            <!-- Menu navigasi di tengah -->
+            <div class="nav-links">
+                <a href="../index.html" class="nav-btn">Beranda</a>
+                <a href="../infogunung.php" class="nav-btn">Informasi Gunung</a>
+                <a href="../pengertian.html" class="nav-btn">Pengertian & Jenis</a>
+                <a href="mitigasi.html" class="nav-btn active">Mitigasi</a>
+                <a href="../dampak.html" class="nav-btn">Dampak</a>
+            </div>
+
+            <!-- Theme toggle di kanan -->
+            <div class="theme-toggle-container">
+                <div class="theme-toggle" onclick="toggleTheme()"></div>
             </div>
         </div>
-    </nav>
-
+    </div>
+</nav>
     <!-- Halaman 1: Tentang Mitigasi -->
     <section class="mitigasi-page page-1">
         <div class="container">
