@@ -8,6 +8,12 @@
 </head>
 <body>
 
+    <!-- Theme Toggle -->
+    <div class="theme-toggle-container">
+        <span class="theme-label">Mode</span>
+        <div class="theme-toggle" id="themeToggle"></div>
+    </div>
+
     <!-- Navbar -->
     <nav id="navbar">
         <div class="container">
@@ -38,7 +44,7 @@
                 </div>
 
                 <!-- Login Button -->
-                <button class="" onclick="location.href=''"></button>
+                <button class="cta-btn" onclick="location.href='#'">Login</button>
             </div>
         </div>
     </nav>
@@ -166,6 +172,23 @@
             if (window.scrollY > 20) {
                 navbar.classList.add('scrolled');
             }
+            
+            // Set current year
+            document.getElementById('currentYear').textContent = new Date().getFullYear();
+            
+            // Theme toggle functionality
+            const themeToggle = document.getElementById('themeToggle');
+            const currentTheme = localStorage.getItem('theme') || 'light';
+            
+            document.documentElement.setAttribute('data-theme', currentTheme);
+            
+            themeToggle.addEventListener('click', function() {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                const newTheme = currentTheme === 'light' ? 'night' : 'light';
+                
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+            });
         });
     </script>
 </body>
