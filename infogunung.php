@@ -1,9 +1,8 @@
 <?php
-// Koneksi ke database
 $host = 'localhost';
 $dbname = 'gunung_berapi';
-$username = 'root'; // Ganti dengan username database Anda
-$password = ''; // Ganti dengan password database Anda
+$username = 'root'; 
+$password = ''; 
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
@@ -12,7 +11,7 @@ try {
     die("Koneksi database gagal: " . $e->getMessage());
 }
 
-// Query untuk mengambil data gunung berapi dengan erupsi terakhir
+
 $sql = "
     SELECT 
         g.id_gunung,
@@ -46,7 +45,6 @@ $sql = "
 $stmt = $pdo->query($sql);
 $volcanoData = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Fungsi untuk menentukan warna status berdasarkan level
 function getStatusColor($level) {
     switch($level) {
         case 'Level IV':
@@ -62,7 +60,6 @@ function getStatusColor($level) {
     }
 }
 
-// Fungsi untuk menentukan status berdasarkan level
 function getStatus($level) {
     switch($level) {
         case 'Level IV':
@@ -78,7 +75,6 @@ function getStatus($level) {
     }
 }
 
-// Fungsi untuk menentukan tingkat aktivitas
 function getActivity($level) {
     switch($level) {
         case 'Level IV':
@@ -94,7 +90,6 @@ function getActivity($level) {
     }
 }
 
-// Format tanggal erupsi
 function formatEruptionDate($date) {
     if ($date && $date != '0000-00-00 00:00:00') {
         return date('Y-m-d', strtotime($date));
