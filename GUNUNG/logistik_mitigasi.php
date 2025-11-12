@@ -1,5 +1,5 @@
 <?php
-function getVolcanoData() {
+function getLogisticsData() {
     $host = 'localhost';
     $dbname = 'gunung_berapi';
     $username = 'root'; 
@@ -11,31 +11,28 @@ function getVolcanoData() {
         
         $sql = "
             SELECT 
-                g.id_gunung,
-                g.nama_gunung as name,
-                g.lokasi as location,
-                CONCAT(FORMAT(g.ketinggian, 0), ' m') as height,
-                g.status,
-                g.tingkat_aktivitas as activity,
-                MAX(e.Tanggal_Erupsi) as last_eruption,
+                lm.id_Mitigasi,
+                g.nama_gunung as volcano_name,
+                g.lokasi as volcano_location,
+                lm.Nama_Pos as post_name,
+                lm.Tipe_Lokasi as location_type,
+                lm.Koordinat as coordinates,
+                lm.Kapasitas as capacity,
+                lm.Fasilitas as facilities,
                 CASE 
-                    WHEN g.status = 'Awas' THEN 'Level IV'
-                    WHEN g.status = 'Siaga' THEN 'Level III'
-                    WHEN g.status = 'Waspada' THEN 'Level II'
-                    WHEN g.status = 'Normal' THEN 'Level I'
-                    ELSE 'Tidak Diketahui'
-                END as level
-            FROM gunung g
-            LEFT JOIN erupsi e ON g.id_gunung = e.id_Gunung
-            GROUP BY g.id_gunung, g.nama_gunung, g.lokasi, g.ketinggian, g.status, g.tingkat_aktivitas
+                    WHEN lm.Tipe_Lokasi = 'Pos Pengamatan' THEN 'observation'
+                    WHEN lm.Tipe_Lokasi = 'Shelter Pengungsian' THEN 'shelter'
+                    ELSE 'other'
+                END as location_class
+            FROM logistik_mitigasi lm
+            JOIN gunung g ON lm.id_Gunung = g.id_gunung
             ORDER BY 
                 CASE 
                     WHEN g.status = 'Awas' THEN 1
                     WHEN g.status = 'Siaga' THEN 2
                     WHEN g.status = 'Waspada' THEN 3
-                    WHEN g.status = 'Normal' THEN 4
-                    ELSE 5
-                END, 
+                    ELSE 4
+                END,
                 g.nama_gunung ASC
         ";
         
@@ -48,60 +45,41 @@ function getVolcanoData() {
     }
 }
 
-function getStatusClass($level) {
-    switch($level) {
-        case 'Level IV':
-            return 'status-level-4';
-        case 'Level III':
-            return 'status-level-3';
-        case 'Level II':
-            return 'status-level-2';
-        case 'Level I':
-            return 'status-level-1';
+function getLocationTypeClass($type) {
+    switch($type) {
+        case 'Pos Pengamatan':
+            return 'location-type-observation';
+        case 'Shelter Pengungsian':
+            return 'location-type-shelter';
         default:
-            return 'status-unknown';
+            return 'location-type-other';
     }
 }
 
-function getStatus($level) {
-    switch($level) {
-        case 'Level IV':
-            return 'Awas';
-        case 'Level III':
-            return 'Siaga';
-        case 'Level II':
-            return 'Waspada';
-        case 'Level I':
-            return 'Normal';
+function getLocationTypeIcon($type) {
+    switch($type) {
+        case 'Pos Pengamatan':
+            return '👁️';
+        case 'Shelter Pengungsian':
+            return '🏠';
         default:
-            return 'Tidak Diketahui';
+            return '📍';
     }
 }
 
-function getActivity($level) {
-    switch($level) {
-        case 'Level IV':
-            return 'Sangat Tinggi';
-        case 'Level III':
-            return 'Tinggi';
-        case 'Level II':
-            return 'Sedang';
-        case 'Level I':
-            return 'Rendah';
-        default:
-            return 'Tidak Diketahui';
+function formatFacilities($facilities) {
+    if (strlen($facilities) > 120) {
+        return substr($facilities, 0, 120) . '...';
     }
+    return $facilities;
 }
 
-function formatEruptionDate($date) {
-    if ($date && $date != '0000-00-00 00:00:00') {
-        return date('Y-m-d', strtotime($date));
-    }
-    return 'Tidak Diketahui';
+function formatCapacity($capacity) {
+    return number_format($capacity, 0, ',', '.') . ' orang';
 }
 
 // Ambil data dari database
-$volcanoData = getVolcanoData();
+$logisticsData = getLogisticsData();
 ?>
 
 <!DOCTYPE html>
@@ -109,7 +87,7 @@ $volcanoData = getVolcanoData();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Gunung Berapi - MagmaCare</title>
+    <title>Logistik Mitigasi - MagmaCare</title>
     <style>
         /* Reset dan variabel CSS */
         :root {
@@ -153,7 +131,7 @@ $volcanoData = getVolcanoData();
             color: hsl(var(--foreground));
             background-color: hsl(var(--background));
             line-height: 1.5;
-            padding-top: 80px; /* Untuk mengkompensasi navbar fixed */
+            padding-top: 80px;
         }
 
         /* Theme Toggle */
@@ -212,7 +190,6 @@ $volcanoData = getVolcanoData();
             opacity: 0.7;
         }
 
-        /* Night Mode State */
         [data-theme="night"] .theme-toggle {
             background: hsl(var(--border));
             border-color: hsl(var(--primary) / 0.5);
@@ -228,11 +205,6 @@ $volcanoData = getVolcanoData();
             left: 8px;
             right: auto;
             opacity: 1;
-        }
-
-        .theme-toggle:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 15px hsl(var(--primary) / 0.3);
         }
 
         /* Navbar Styles */
@@ -302,11 +274,6 @@ $volcanoData = getVolcanoData();
         .logo-btn:hover {
             transform: translateY(-2px);
             background: hsl(var(--primary) / 0.05);
-        }
-
-        .logo-btn:hover .logo-icon {
-            transform: scale(1.1) rotate(5deg);
-            box-shadow: 0 0 20px hsl(var(--primary) / 0.3);
         }
 
         .logo-icon {
@@ -432,46 +399,21 @@ $volcanoData = getVolcanoData();
             box-shadow: 0 4px 15px hsl(var(--primary) / 0.3);
         }
 
-        .cta-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s ease;
-        }
-
-        .cta-btn:hover::before {
-            left: 100%;
-        }
-
-        .cta-btn:hover {
-            background: hsl(var(--primary-dark));
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px hsl(var(--primary) / 0.5);
-        }
-
-        .cta-btn:active {
-            transform: translateY(-1px);
-        }
-
         @media (min-width: 640px) {
             .cta-btn {
                 display: inline-block;
             }
         }
 
-        /* Info Cards Section Styles */
-        .info-cards {
+        /* Logistics Cards Section */
+        .logistics-cards {
             padding: 4rem 0;
             background-color: hsl(var(--background));
             transition: background-color 0.3s ease;
             min-height: calc(100vh - 160px);
         }
 
-        .info-cards h2 {
+        .logistics-cards h2 {
             text-align: center;
             font-size: 2.5rem;
             margin-bottom: 1rem;
@@ -494,7 +436,7 @@ $volcanoData = getVolcanoData();
 
         .cards-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
             gap: 2rem;
             padding: 1rem;
         }
@@ -506,7 +448,7 @@ $volcanoData = getVolcanoData();
             }
         }
 
-        .info-card {
+        .logistics-card {
             background: hsl(var(--card-bg));
             border-radius: 1rem;
             padding: 2rem;
@@ -516,127 +458,134 @@ $volcanoData = getVolcanoData();
             gap: 1rem;
             transition: all 0.3s ease;
             border: 1px solid hsl(var(--border));
+            position: relative;
+            overflow: hidden;
         }
 
-        .info-card:hover {
+        .logistics-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
         }
 
-        .card-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
-            background: hsl(var(--primary) / 0.1);
+        .logistics-header {
             display: flex;
-            align-items: center;
-            justify-content: center;
+            align-items: flex-start;
+            justify-content: space-between;
             margin-bottom: 0.5rem;
         }
 
-        .empty-icon-inner {
-            width: 24px;
-            height: 24px;
-            background: hsl(var(--primary));
-            border-radius: 6px;
-            position: relative;
-        }
-
-        .empty-icon-inner::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 12px;
-            height: 12px;
-            background: white;
-            border-radius: 2px;
-        }
-
-        .info-card h3 {
-            font-size: 1.25rem;
-            font-weight: 600;
+        .post-name {
+            font-size: 1.5rem;
+            font-weight: 700;
             color: hsl(var(--foreground));
             margin: 0;
         }
 
-        .info-card > p {
-            color: hsl(var(--muted-foreground));
-            font-size: 0.95rem;
-            line-height: 1.5;
-            margin: 0;
-        }
-
-        .card-content {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-        }
-
-        .card-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.5rem 0;
-        }
-
-        .card-label {
-            color: hsl(var(--muted-foreground));
-            font-size: 0.9rem;
-            font-weight: 500;
-        }
-
-        .card-value {
-            color: hsl(var(--foreground));
-            font-size: 0.9rem;
-            font-weight: 600;
-        }
-
-        .status-badge {
-            padding: 0.25rem 0.75rem;
-            border-radius: 1rem;
+        .location-type-badge {
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
             font-size: 0.8rem;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        .status-level-4 {
-            background: #dc2626;
+        .location-type-observation {
+            background: linear-gradient(135deg, #0369a1, #0ea5e9);
             color: white;
         }
 
-        .status-level-3 {
-            background: #ea580c;
+        .location-type-shelter {
+            background: linear-gradient(135deg, #15803d, #22c55e);
             color: white;
         }
 
-        .status-level-2 {
-            background: #d97706;
-            color: white;
-        }
-
-        .status-level-1 {
-            background: #16a34a;
-            color: white;
-        }
-
-        .status-unknown {
+        .location-type-other {
             background: hsl(var(--muted-foreground));
             color: white;
         }
 
-        .card-divider {
-            border-top: 1px solid hsl(var(--border));
-            margin-top: 1rem;
-            padding-top: 1rem;
+        .volcano-info {
+            color: hsl(var(--muted-foreground));
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        .card-footer {
+        .logistics-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 480px) {
+            .logistics-details {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .detail-label {
             color: hsl(var(--muted-foreground));
-            font-size: 0.85rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .detail-value {
+            color: hsl(var(--foreground));
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .coordinates {
+            font-family: 'Courier New', monospace;
+            background: hsl(var(--primary) / 0.05);
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .facilities-section {
+            border-top: 1px solid hsl(var(--border));
+            padding-top: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .facilities-label {
+            color: hsl(var(--muted-foreground));
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .facilities-text {
+            color: hsl(var(--foreground));
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .capacity-highlight {
+            background: linear-gradient(135deg, #dc2626, #ef4444);
+            color: white;
+            padding: 0.75rem 1rem;
+            border-radius: 0.75rem;
             text-align: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-top: 0.5rem;
         }
 
         /* Empty State */
@@ -655,6 +604,7 @@ $volcanoData = getVolcanoData();
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 2rem;
         }
 
         .empty-title {
@@ -690,19 +640,6 @@ $volcanoData = getVolcanoData();
             position: relative;
         }
 
-        /* Background efek untuk night mode */
-        [data-theme="night"] footer::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 20% 80%, hsl(var(--primary) / 0.03) 0%, transparent 50%);
-            pointer-events: none;
-            z-index: 0;
-        }
-
         .footer-grid {
             display: grid;
             grid-template-columns: 1fr;
@@ -722,30 +659,6 @@ $volcanoData = getVolcanoData();
             }
         }
 
-        @media (max-width: 1024px) {
-            .footer-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 2rem;
-            }
-            
-            .brand-section {
-                grid-column: 1 / -1;
-            }
-        }
-
-        @media (max-width: 640px) {
-            footer {
-                padding: 3rem 0 1.5rem;
-            }
-            
-            .footer-grid {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-                padding: 0 0.5rem 1.5rem;
-            }
-        }
-
-        /* Brand Section */
         .brand-section {
             display: flex;
             flex-direction: column;
@@ -756,16 +669,6 @@ $volcanoData = getVolcanoData();
             display: flex;
             align-items: center;
             gap: 0.75rem;
-        }
-
-        @media (max-width: 640px) {
-            .brand-section {
-                text-align: center;
-            }
-            
-            .brand-logo {
-                justify-content: center;
-            }
         }
 
         .brand-logo .logo-icon {
@@ -799,7 +702,6 @@ $volcanoData = getVolcanoData();
             margin: 0;
         }
 
-        /* Footer Sections */
         .footer-section h4 {
             font-size: 1.125rem;
             font-weight: 600;
@@ -819,17 +721,6 @@ $volcanoData = getVolcanoData();
             border-radius: 1px;
         }
 
-        @media (max-width: 640px) {
-            .footer-section h4 {
-                text-align: center;
-            }
-            
-            .footer-section h4::after {
-                left: 50%;
-                transform: translateX(-50%);
-            }
-        }
-
         .footer-links {
             list-style: none;
             padding: 0;
@@ -837,10 +728,6 @@ $volcanoData = getVolcanoData();
             display: flex;
             flex-direction: column;
             gap: 0.75rem;
-        }
-
-        .footer-links li {
-            margin: 0;
         }
 
         .footer-links a,
@@ -857,81 +744,6 @@ $volcanoData = getVolcanoData();
             transform: translateX(5px);
         }
 
-        /* Contact Section Specific Styles */
-        .footer-section:last-child .footer-links li {
-            display: flex;
-            align-items: flex-start;
-            gap: 0.5rem;
-        }
-
-        .footer-section:last-child .footer-links li::before {
-            content: '•';
-            color: hsl(var(--primary));
-            font-weight: bold;
-            flex-shrink: 0;
-        }
-
-        /* Social Icons */
-        .social-links {
-            display: flex;
-            gap: 0.75rem;
-            margin-top: 1.5rem;
-        }
-
-        @media (max-width: 640px) {
-            .social-links {
-                justify-content: center;
-            }
-        }
-
-        .social-link {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
-            background: hsl(var(--border));
-            color: hsl(var(--foreground));
-            text-decoration: none;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        [data-theme="night"] .social-link {
-            background: hsl(var(--border) / 0.3);
-            border: 1px solid hsl(var(--border) / 0.5);
-        }
-
-        .social-link::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, hsl(var(--primary) / 0.1), transparent);
-            transition: left 0.5s ease;
-        }
-
-        .social-link:hover::before {
-            left: 100%;
-        }
-
-        .social-link:hover {
-            background: hsl(var(--primary));
-            color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px hsl(var(--primary) / 0.3);
-        }
-
-        [data-theme="night"] .social-link:hover {
-            background: hsl(var(--primary));
-            border-color: hsl(var(--primary));
-        }
-
-        /* Footer Bottom */
         .footer-bottom {
             padding-top: 2rem;
             border-top: 1px solid hsl(var(--border));
@@ -942,75 +754,10 @@ $volcanoData = getVolcanoData();
             padding: 2rem 1rem 0;
         }
 
-        @media (max-width: 640px) {
-            .footer-bottom {
-                padding-top: 1.5rem;
-                margin-top: 1.5rem;
-            }
-        }
-
         .footer-bottom p {
             color: hsl(var(--muted-foreground));
             font-size: 0.9rem;
             margin: 0;
-        }
-
-        /* Animation untuk footer elements */
-        .footer-section {
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInUp 0.6s ease forwards;
-        }
-
-        .footer-section:nth-child(1) { animation-delay: 0.1s; }
-        .footer-section:nth-child(2) { animation-delay: 0.2s; }
-        .footer-section:nth-child(3) { animation-delay: 0.3s; }
-        .footer-section:nth-child(4) { animation-delay: 0.4s; }
-
-        @keyframes fadeInUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: hsl(var(--background));
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: hsl(var(--primary));
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: hsl(var(--primary-dark));
-        }
-
-        /* Selection Color */
-        ::selection {
-            background: hsl(var(--primary) / 0.3);
-            color: hsl(var(--foreground));
-        }
-
-        /* Background efek untuk night mode */
-        [data-theme="night"] body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(circle at 20% 80%, hsl(var(--primary) / 0.08) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, hsl(var(--primary) / 0.05) 0%, transparent 50%);
-            z-index: -1;
-            pointer-events: none;
         }
 
         /* Responsive Design */
@@ -1043,7 +790,7 @@ $volcanoData = getVolcanoData();
                 font-size: 0.8rem;
             }
             
-            .info-cards h2 {
+            .logistics-cards h2 {
                 font-size: 2rem;
             }
         }
@@ -1060,7 +807,6 @@ $volcanoData = getVolcanoData();
     <nav id="navbar">
         <div class="container">
             <div class="nav-content">
-                <!-- Logo -->
                 <a class="logo-btn" href="../index.html">
                     <div class="logo-icon">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1088,78 +834,79 @@ $volcanoData = getVolcanoData();
         </div>
     </nav>
 
-    <!-- Data Gunung Section -->
-    <section id="data-gunung" class="info-cards">
+    <!-- Logistik Mitigasi Section -->
+    <section class="logistics-cards">
         <div class="container">
-            <h2>Data <span class="text-primary">Gunung Berapi</span> Indonesia</h2>
-            <p class="section-desc">Pemantauan real-time status dan aktivitas gunung berapi aktif di Indonesia</p>
+            <h2>Logistik <span class="text-primary">Mitigasi</span></h2>
+            <p class="section-desc">Fasilitas dan infrastruktur pendukung untuk penanggulangan bencana gunung berapi</p>
 
             <div class="cards-grid">
-                <?php foreach ($volcanoData as $volcano): ?>
+                <?php foreach ($logisticsData as $logistic): ?>
                     <?php
-                    $statusClass = getStatusClass($volcano['level']);
-                    $statusText = getStatus($volcano['level']);
-                    $activityText = getActivity($volcano['level']);
-                    $eruptionDate = formatEruptionDate($volcano['last_eruption']);
+                    $typeClass = getLocationTypeClass($logistic['location_type']);
+                    $typeIcon = getLocationTypeIcon($logistic['location_type']);
+                    $formattedFacilities = formatFacilities($logistic['facilities']);
+                    $formattedCapacity = formatCapacity($logistic['capacity']);
                     ?>
                     
-                    <div class="info-card">
-                        <div class="card-icon">
-                            <div class="empty-icon-inner"></div>
+                    <div class="logistics-card">
+                        <div class="logistics-header">
+                            <h3 class="post-name"><?php echo htmlspecialchars($logistic['post_name']); ?></h3>
+                            <span class="location-type-badge <?php echo $typeClass; ?>">
+                                <?php echo $typeIcon; ?>
+                                <?php echo htmlspecialchars($logistic['location_type']); ?>
+                            </span>
                         </div>
-                        
-                        <h3><?php echo htmlspecialchars($volcano['name']); ?></h3>
-                        <p><?php echo htmlspecialchars($volcano['location']); ?></p>
 
-                        <div class="card-content">
-                            <div class="card-row">
-                                <span class="card-label">Ketinggian</span>
-                                <span class="card-value"><?php echo htmlspecialchars($volcano['height']); ?></span>
-                            </div>
+                        <div class="volcano-info">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="m8 3 4 8 5-5 5 15H2L8 3z"></path>
+                            </svg>
+                            <?php echo htmlspecialchars($logistic['volcano_name']); ?> - <?php echo htmlspecialchars($logistic['volcano_location']); ?>
+                        </div>
 
-                            <div class="card-row">
-                                <span class="card-label">Status</span>
-                                <span class="status-badge <?php echo $statusClass; ?>">
-                                    <?php echo $statusText; ?>
-                                </span>
+                        <div class="logistics-details">
+                            <div class="detail-item">
+                                <span class="detail-label">Koordinat</span>
+                                <span class="detail-value coordinates"><?php echo htmlspecialchars($logistic['coordinates']); ?></span>
                             </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Kapasitas</span>
+                                <span class="detail-value"><?php echo $formattedCapacity; ?></span>
+                            </div>
+                        </div>
 
-                            <div class="card-row">
-                                <span class="card-label">Level</span>
-                                <span class="card-value"><?php echo htmlspecialchars($volcano['level']); ?></span>
+                        <?php if ($logistic['location_type'] === 'Shelter Pengungsian'): ?>
+                            <div class="capacity-highlight">
+                                Kapasitas Tampung: <?php echo $formattedCapacity; ?>
                             </div>
+                        <?php endif; ?>
 
-                            <div class="card-row">
-                                <span class="card-label">Aktivitas</span>
-                                <span class="card-value"><?php echo $activityText; ?></span>
-                            </div>
-
-                            <div class="card-divider">
-                                <div class="card-footer">
-                                    <span>Erupsi terakhir: <?php echo $eruptionDate; ?></span>
-                                </div>
-                            </div>
+                        <div class="facilities-section">
+                            <div class="facilities-label">Fasilitas:</div>
+                            <div class="facilities-text"><?php echo htmlspecialchars($formattedFacilities); ?></div>
                         </div>
                     </div>
                 <?php endforeach; ?>
             </div>
 
-            <?php if (empty($volcanoData)): ?>
+            <?php if (empty($logisticsData)): ?>
                 <div class="empty-state">
                     <div class="empty-icon">
-                        <div class="empty-icon-inner"></div>
+                        🏠
                     </div>
-                    <h3 class="empty-title">Tidak ada data gunung berapi</h3>
-                    <p class="empty-desc">Data gunung berapi tidak ditemukan dalam database.</p>
+                    <h3 class="empty-title">Tidak ada data logistik mitigasi</h3>
+                    <p class="empty-desc">Data pos pengamatan dan shelter pengungsian tidak ditemukan dalam database.</p>
                     <div class="empty-note">
-                        <p><strong>Note:</strong> Database terdeteksi kosong. Silakan tambahkan data gunung berapi terlebih dahulu.</p>
+                        <p><strong>Note:</strong> Database logistik mitigasi terdeteksi kosong. Silakan tambahkan data logistik terlebih dahulu.</p>
                     </div>
                 </div>
             <?php endif; ?>
         </div>
     </section>
 
-     <footer>
+    <!-- Footer -->
+    <footer>
         <div class="footer-grid">
             <div class="brand-section">
                 <div class="brand-logo">
@@ -1182,11 +929,11 @@ $volcanoData = getVolcanoData();
             <div class="footer-section">
                 <h4>Navigasi</h4>
                 <ul class="footer-links">
-                    <li><a href="#beranda">Beranda</a></li>
-                    <li><a href="GUNUNG/gunung.html">Informasi Gunung</a></li>
-                    <li><a href="pengertian.html">Pengertian & Jenis</a></li>
-                    <li><a href="MITIGASI/mitigasi.html">Mitigasi</a></li>
-                    <li><a href="dampak.html">Dampak</a></li>
+                    <li><a href="../index.html">Beranda</a></li>
+                    <li><a href="infogunung.php">Informasi Gunung</a></li>
+                    <li><a href="erupsi.php">Data Erupsi</a></li>
+                    <li><a href="logistik_mitigasi.php">Logistik Mitigasi</a></li>
+                    <li><a href="../pengertian.html">Pengertian & Jenis</a></li>
                 </ul>
             </div>
 
@@ -1217,8 +964,8 @@ $volcanoData = getVolcanoData();
             <p>&copy; 2025 MagmaCare - Sistem Informasi Gunung Berapi. All rights reserved.</p>
         </div>
     </footer>
-    <script>
-        
+
+    <script>  
         const themeToggle = document.getElementById('themeToggle');
         const currentTheme = localStorage.getItem('theme') || 'light';
         
@@ -1232,7 +979,6 @@ $volcanoData = getVolcanoData();
             localStorage.setItem('theme', newTheme);
         });
 
-       
         window.addEventListener('scroll', function() {
             const navbar = document.getElementById('navbar');
             if (window.scrollY > 50) {
@@ -1242,3 +988,5 @@ $volcanoData = getVolcanoData();
             }
         });
     </script>
+</body>
+</html>
