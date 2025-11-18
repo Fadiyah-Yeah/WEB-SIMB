@@ -56,6 +56,10 @@ if(isset($_GET['hapus'])) {
 // Ambil data gunung untuk dropdown
 $query_gunung = "SELECT * FROM gunung";
 $result_gunung = mysqli_query($conn, $query_gunung);
+$gunung_data = []; // Simpan data gunung untuk digunakan berulang
+while($row = mysqli_fetch_assoc($result_gunung)) {
+    $gunung_data[] = $row;
+}
 
 // Ambil data erupsi dengan join gunung
 $query_erupsi = "SELECT e.*, g.nama_gunung 
@@ -65,12 +69,17 @@ $query_erupsi = "SELECT e.*, g.nama_gunung
 $result_erupsi = mysqli_query($conn, $query_erupsi);
 
 // Ambil data untuk edit
-$edit_data = [];
+$edit_data = null; // Ubah menjadi null
+$is_edit_mode = false; // Tambah flag untuk mode edit
+
 if(isset($_GET['edit'])) {
     $id_edit = $_GET['edit'];
     $query_edit = "SELECT * FROM erupsi WHERE id_Erupsi = '$id_edit'";
     $result_edit = mysqli_query($conn, $query_edit);
-    $edit_data = mysqli_fetch_assoc($result_edit);
+    if(mysqli_num_rows($result_edit) > 0) {
+        $edit_data = mysqli_fetch_assoc($result_edit);
+        $is_edit_mode = true;
+    }
 }
 ?>
 
@@ -94,7 +103,7 @@ if(isset($_GET['edit'])) {
                 <nav class="navbar navbar-light bg-white border-bottom mt-3">
                     <div class="container-fluid">
                         <span class="navbar-text">
-                            <i class="fas fa-user me-1"></i><?php echo $admin['username']; ?>
+                            <i class="fas fa-user me-1"></i><?php echo htmlspecialchars($admin['username']); ?>
                         </span>
                     </div>
                 </nav>
@@ -106,11 +115,11 @@ if(isset($_GET['edit'])) {
                 <!-- Form Tambah/Edit -->
                 <div class="card mb-4">
                     <div class="card-header">
-                        <h5 class="mb-0"><?php echo isset($edit_data) ? 'Edit Data Erupsi' : 'Tambah Data Erupsi'; ?></h5>
+                        <h5 class="mb-0"><?php echo $is_edit_mode ? 'Edit Data Erupsi' : 'Tambah Data Erupsi'; ?></h5>
                     </div>
                     <div class="card-body">
                         <form method="POST">
-                            <?php if(isset($edit_data)): ?>
+                            <?php if($is_edit_mode && $edit_data): ?>
                                 <input type="hidden" name="id_erupsi" value="<?php echo $edit_data['id_Erupsi']; ?>">
                             <?php endif; ?>
                             
@@ -120,12 +129,12 @@ if(isset($_GET['edit'])) {
                                         <label class="form-label">Gunung</label>
                                         <select class="form-control" name="id_gunung" required>
                                             <option value="">Pilih Gunung</option>
-                                            <?php while($gunung = mysqli_fetch_assoc($result_gunung)): ?>
+                                            <?php foreach($gunung_data as $gunung): ?>
                                                 <option value="<?php echo $gunung['id_gunung']; ?>"
-                                                    <?php echo ($edit_data['id_Gunung'] ?? '') == $gunung['id_gunung'] ? 'selected' : ''; ?>>
-                                                    <?php echo $gunung['nama_gunung']; ?>
+                                                    <?php echo ($is_edit_mode && ($edit_data['id_Gunung'] ?? '') == $gunung['id_gunung']) ? 'selected' : ''; ?>>
+                                                    <?php echo htmlspecialchars($gunung['nama_gunung']); ?>
                                                 </option>
-                                            <?php endwhile; ?>
+                                            <?php endforeach; ?>
                                         </select>
                                     </div>
                                 </div>
@@ -133,7 +142,7 @@ if(isset($_GET['edit'])) {
                                     <div class="mb-3">
                                         <label class="form-label">Tanggal Erupsi</label>
                                         <input type="datetime-local" class="form-control" name="tanggal_erupsi" 
-                                               value="<?php echo isset($edit_data['Tanggal_Erupsi']) ? date('Y-m-d\TH:i', strtotime($edit_data['Tanggal_Erupsi'])) : ''; ?>" required>
+                                               value="<?php echo $is_edit_mode && isset($edit_data['Tanggal_Erupsi']) ? date('Y-m-d\TH:i', strtotime($edit_data['Tanggal_Erupsi'])) : ''; ?>" required>
                                     </div>
                                 </div>
                             </div>
@@ -143,19 +152,19 @@ if(isset($_GET['edit'])) {
                                     <div class="mb-3">
                                         <label class="form-label">Tipe Erupsi</label>
                                         <input type="text" class="form-control" name="tipe_erupsi" 
-                                               value="<?php echo $edit_data['Tipe_Erupsi'] ?? ''; ?>" required>
+                                               value="<?php echo $is_edit_mode ? htmlspecialchars($edit_data['Tipe_Erupsi'] ?? '') : ''; ?>" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label class="form-label">Dampak</label>
-                                        <textarea class="form-control" name="dampak" rows="1" required><?php echo $edit_data['Dampak'] ?? ''; ?></textarea>
+                                        <textarea class="form-control" name="dampak" rows="1" required><?php echo $is_edit_mode ? htmlspecialchars($edit_data['Dampak'] ?? '') : ''; ?></textarea>
                                     </div>
                                 </div>
                             </div>
                             
                             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                <?php if(isset($edit_data)): ?>
+                                <?php if($is_edit_mode): ?>
                                     <button type="submit" name="edit" class="btn btn-warning">Update Data</button>
                                     <a href="erupsi.php" class="btn btn-secondary">Batal</a>
                                 <?php else: ?>
@@ -188,10 +197,10 @@ if(isset($_GET['edit'])) {
                                     <?php while($row = mysqli_fetch_assoc($result_erupsi)): ?>
                                     <tr>
                                         <td><?php echo $row['id_Erupsi']; ?></td>
-                                        <td><?php echo $row['nama_gunung']; ?></td>
+                                        <td><?php echo htmlspecialchars($row['nama_gunung']); ?></td>
                                         <td><?php echo date('d/m/Y H:i', strtotime($row['Tanggal_Erupsi'])); ?></td>
-                                        <td><?php echo $row['Tipe_Erupsi']; ?></td>
-                                        <td><?php echo $row['Dampak']; ?></td>
+                                        <td><?php echo htmlspecialchars($row['Tipe_Erupsi']); ?></td>
+                                        <td><?php echo htmlspecialchars($row['Dampak']); ?></td>
                                         <td>
                                             <a href="erupsi.php?edit=<?php echo $row['id_Erupsi']; ?>" class="btn btn-warning btn-sm">
                                                 <i class="fas fa-edit"></i>
