@@ -788,7 +788,7 @@ $eruptionData = getEruptionData();
 <body>
     <!-- Theme Toggle -->
     <div class="theme-toggle-container">
-        <span class="theme-label">Mode</span>
+        <span class="theme-label"></span>
         <div class="theme-toggle" id="themeToggle"></div>
     </div>
 
