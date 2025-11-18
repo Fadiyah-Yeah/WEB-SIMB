@@ -61,12 +61,17 @@ $query_gunung = "SELECT * FROM gunung ORDER BY id_gunung DESC";
 $result_gunung = mysqli_query($conn, $query_gunung);
 
 // Ambil data untuk edit
-$edit_data = [];
+$edit_data = null; // Ubah menjadi null
+$is_edit_mode = false; // Tambah flag untuk mode edit
+
 if(isset($_GET['edit'])) {
     $id_edit = $_GET['edit'];
     $query_edit = "SELECT * FROM gunung WHERE id_gunung = '$id_edit'";
     $result_edit = mysqli_query($conn, $query_edit);
-    $edit_data = mysqli_fetch_assoc($result_edit);
+    if(mysqli_num_rows($result_edit) > 0) {
+        $edit_data = mysqli_fetch_assoc($result_edit);
+        $is_edit_mode = true;
+    }
 }
 ?>
 
@@ -78,6 +83,11 @@ if(isset($_GET['edit'])) {
     <title>Data Gunung - Sistem Informasi Gunung Berapi</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .bg-orange {
+            background-color: #fd7e14 !important;
+        }
+    </style>
 </head>
 <body>
     <div class="container-fluid">
@@ -90,7 +100,7 @@ if(isset($_GET['edit'])) {
                 <nav class="navbar navbar-light bg-white border-bottom mt-3">
                     <div class="container-fluid">
                         <span class="navbar-text">
-                            <i class="fas fa-user me-1"></i><?php echo $admin['username']; ?>
+                            <i class="fas fa-user me-1"></i><?php echo htmlspecialchars($admin['username']); ?>
                         </span>
                     </div>
                 </nav>
@@ -102,11 +112,11 @@ if(isset($_GET['edit'])) {
                 <!-- Form Tambah/Edit -->
                 <div class="card mb-4">
                     <div class="card-header">
-                        <h5 class="mb-0"><?php echo isset($edit_data) ? 'Edit Data Gunung' : 'Tambah Data Gunung'; ?></h5>
+                        <h5 class="mb-0"><?php echo $is_edit_mode ? 'Edit Data Gunung' : 'Tambah Data Gunung'; ?></h5>
                     </div>
                     <div class="card-body">
                         <form method="POST">
-                            <?php if(isset($edit_data)): ?>
+                            <?php if($is_edit_mode && $edit_data): ?>
                                 <input type="hidden" name="id_gunung" value="<?php echo $edit_data['id_gunung']; ?>">
                             <?php endif; ?>
                             
@@ -115,14 +125,14 @@ if(isset($_GET['edit'])) {
                                     <div class="mb-3">
                                         <label class="form-label">Nama Gunung</label>
                                         <input type="text" class="form-control" name="nama_gunung" 
-                                               value="<?php echo $edit_data['nama_gunung'] ?? ''; ?>" required>
+                                               value="<?php echo $is_edit_mode ? htmlspecialchars($edit_data['nama_gunung']) : ''; ?>" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label class="form-label">Lokasi</label>
                                         <input type="text" class="form-control" name="lokasi" 
-                                               value="<?php echo $edit_data['lokasi'] ?? ''; ?>" required>
+                                               value="<?php echo $is_edit_mode ? htmlspecialchars($edit_data['lokasi']) : ''; ?>" required>
                                     </div>
                                 </div>
                             </div>
@@ -132,17 +142,17 @@ if(isset($_GET['edit'])) {
                                     <div class="mb-3">
                                         <label class="form-label">Ketinggian (meter)</label>
                                         <input type="number" class="form-control" name="ketinggian" 
-                                               value="<?php echo $edit_data['ketinggian'] ?? ''; ?>" required>
+                                               value="<?php echo $is_edit_mode ? htmlspecialchars($edit_data['ketinggian']) : ''; ?>" required>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="mb-3">
                                         <label class="form-label">Status</label>
                                         <select class="form-control" name="status" required>
-                                            <option value="Normal" <?php echo ($edit_data['status'] ?? '') == 'Normal' ? 'selected' : ''; ?>>Normal</option>
-                                            <option value="Waspada" <?php echo ($edit_data['status'] ?? '') == 'Waspada' ? 'selected' : ''; ?>>Waspada</option>
-                                            <option value="Siaga" <?php echo ($edit_data['status'] ?? '') == 'Siaga' ? 'selected' : ''; ?>>Siaga</option>
-                                            <option value="Awas" <?php echo ($edit_data['status'] ?? '') == 'Awas' ? 'selected' : ''; ?>>Awas</option>
+                                            <option value="Normal" <?php echo ($is_edit_mode && $edit_data['status'] == 'Normal') ? 'selected' : ''; ?>>Normal</option>
+                                            <option value="Waspada" <?php echo ($is_edit_mode && $edit_data['status'] == 'Waspada') ? 'selected' : ''; ?>>Waspada</option>
+                                            <option value="Siaga" <?php echo ($is_edit_mode && $edit_data['status'] == 'Siaga') ? 'selected' : ''; ?>>Siaga</option>
+                                            <option value="Awas" <?php echo ($is_edit_mode && $edit_data['status'] == 'Awas') ? 'selected' : ''; ?>>Awas</option>
                                         </select>
                                     </div>
                                 </div>
@@ -150,13 +160,13 @@ if(isset($_GET['edit'])) {
                                     <div class="mb-3">
                                         <label class="form-label">Tingkat Aktivitas</label>
                                         <input type="text" class="form-control" name="tingkat_aktivitas" 
-                                               value="<?php echo $edit_data['tingkat_aktivitas'] ?? ''; ?>" required>
+                                               value="<?php echo $is_edit_mode ? htmlspecialchars($edit_data['tingkat_aktivitas']) : ''; ?>" required>
                                     </div>
                                 </div>
                             </div>
                             
                             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                <?php if(isset($edit_data)): ?>
+                                <?php if($is_edit_mode): ?>
                                     <button type="submit" name="edit" class="btn btn-warning">Update Data</button>
                                     <a href="gunung.php" class="btn btn-secondary">Batal</a>
                                 <?php else: ?>
@@ -190,8 +200,8 @@ if(isset($_GET['edit'])) {
                                     <?php while($row = mysqli_fetch_assoc($result_gunung)): ?>
                                     <tr>
                                         <td><?php echo $row['id_gunung']; ?></td>
-                                        <td><?php echo $row['nama_gunung']; ?></td>
-                                        <td><?php echo $row['lokasi']; ?></td>
+                                        <td><?php echo htmlspecialchars($row['nama_gunung']); ?></td>
+                                        <td><?php echo htmlspecialchars($row['lokasi']); ?></td>
                                         <td><?php echo number_format($row['ketinggian']); ?> m</td>
                                         <td>
                                             <span class="badge 
@@ -204,10 +214,10 @@ if(isset($_GET['edit'])) {
                                                     default: echo 'bg-secondary';
                                                 }
                                                 ?>">
-                                                <?php echo $row['status']; ?>
+                                                <?php echo htmlspecialchars($row['status']); ?>
                                             </span>
                                         </td>
-                                        <td><?php echo $row['tingkat_aktivitas']; ?></td>
+                                        <td><?php echo htmlspecialchars($row['tingkat_aktivitas']); ?></td>
                                         <td>
                                             <a href="gunung.php?edit=<?php echo $row['id_gunung']; ?>" class="btn btn-warning btn-sm">
                                                 <i class="fas fa-edit"></i>
