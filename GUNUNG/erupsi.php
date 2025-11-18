@@ -818,7 +818,7 @@ $eruptionData = getEruptionData();
                 </div>
 
                 <!-- Login Button -->
-                <a class="cta-btn" href="../CRUD/login.php">Login</a>
+                <a class="" href=""></a>
             </div>
         </div>
     </nav>
