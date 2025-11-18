@@ -2,10 +2,10 @@
 session_start();
 include "konek.php";
 
-// if(!isset($_SESSION['admin_id'])) {
-//     header("location: login.php");
-//     exit();
-// }
+if(!isset($_SESSION['admin_id'])) {
+    header("location: login.php");
+    exit();
+}
 
 $admin_id = $_SESSION['admin_id'];
 $query_admin = "SELECT * FROM admin WHERE id_admin = '$admin_id'";
