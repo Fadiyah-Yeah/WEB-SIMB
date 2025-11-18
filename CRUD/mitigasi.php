@@ -62,6 +62,10 @@ if(isset($_GET['hapus'])) {
 // Ambil data gunung untuk dropdown
 $query_gunung = "SELECT * FROM gunung";
 $result_gunung = mysqli_query($conn, $query_gunung);
+$gunung_data = []; // Simpan data gunung dalam array
+while($row = mysqli_fetch_assoc($result_gunung)) {
+    $gunung_data[] = $row;
+}
 
 // Ambil data mitigasi dengan join gunung
 $query_mitigasi = "SELECT m.*, g.nama_gunung 
@@ -69,14 +73,23 @@ $query_mitigasi = "SELECT m.*, g.nama_gunung
                    LEFT JOIN gunung g ON m.id_Gunung = g.id_gunung 
                    ORDER BY m.id_Mitigasi DESC";
 $result_mitigasi = mysqli_query($conn, $query_mitigasi);
+$mitigasi_data = []; // Simpan data mitigasi dalam array
+while($row = mysqli_fetch_assoc($result_mitigasi)) {
+    $mitigasi_data[] = $row;
+}
 
 // Ambil data untuk edit
-$edit_data = [];
+$edit_data = null; // Ubah menjadi null
+$is_edit_mode = false; // Tambah flag untuk mode edit
+
 if(isset($_GET['edit'])) {
     $id_edit = $_GET['edit'];
     $query_edit = "SELECT * FROM logistik_mitigasi WHERE id_Mitigasi = '$id_edit'";
     $result_edit = mysqli_query($conn, $query_edit);
-    $edit_data = mysqli_fetch_assoc($result_edit);
+    if(mysqli_num_rows($result_edit) > 0) {
+        $edit_data = mysqli_fetch_assoc($result_edit);
+        $is_edit_mode = true;
+    }
 }
 ?>
 
@@ -112,7 +125,7 @@ if(isset($_GET['edit'])) {
                 <nav class="navbar navbar-light bg-white border-bottom mt-3">
                     <div class="container-fluid">
                         <span class="navbar-text">
-                            <i class="fas fa-user me-1"></i><?php echo $admin['username']; ?>
+                            <i class="fas fa-user me-1"></i><?php echo htmlspecialchars($admin['username']); ?>
                         </span>
                     </div>
                 </nav>
@@ -124,11 +137,11 @@ if(isset($_GET['edit'])) {
                 <!-- Form Tambah/Edit -->
                 <div class="card mb-4">
                     <div class="card-header">
-                        <h5 class="mb-0"><?php echo isset($edit_data) ? 'Edit Data Mitigasi' : 'Tambah Data Mitigasi'; ?></h5>
+                        <h5 class="mb-0"><?php echo $is_edit_mode ? 'Edit Data Mitigasi' : 'Tambah Data Mitigasi'; ?></h5>
                     </div>
                     <div class="card-body">
                         <form method="POST">
-                            <?php if(isset($edit_data)): ?>
+                            <?php if($is_edit_mode && $edit_data): ?>
                                 <input type="hidden" name="id_mitigasi" value="<?php echo $edit_data['id_Mitigasi']; ?>">
                             <?php endif; ?>
                             
@@ -138,16 +151,12 @@ if(isset($_GET['edit'])) {
                                         <label class="form-label">Gunung</label>
                                         <select class="form-control" name="id_gunung" required>
                                             <option value="">Pilih Gunung</option>
-                                            <?php 
-                                            // Reset pointer result gunung
-                                            mysqli_data_seek($result_gunung, 0);
-                                            while($gunung = mysqli_fetch_assoc($result_gunung)): 
-                                            ?>
+                                            <?php foreach($gunung_data as $gunung): ?>
                                                 <option value="<?php echo $gunung['id_gunung']; ?>"
-                                                    <?php echo ($edit_data['id_Gunung'] ?? '') == $gunung['id_gunung'] ? 'selected' : ''; ?>>
-                                                    <?php echo $gunung['nama_gunung']; ?>
+                                                    <?php echo ($is_edit_mode && ($edit_data['id_Gunung'] ?? '') == $gunung['id_gunung']) ? 'selected' : ''; ?>>
+                                                    <?php echo htmlspecialchars($gunung['nama_gunung']); ?>
                                                 </option>
-                                            <?php endwhile; ?>
+                                            <?php endforeach; ?>
                                         </select>
                                     </div>
                                 </div>
@@ -155,7 +164,7 @@ if(isset($_GET['edit'])) {
                                     <div class="mb-3">
                                         <label class="form-label">Nama Pos</label>
                                         <input type="text" class="form-control" name="nama_pos" 
-                                               value="<?php echo $edit_data['Nama_Pos'] ?? ''; ?>" required>
+                                               value="<?php echo $is_edit_mode ? htmlspecialchars($edit_data['Nama_Pos'] ?? '') : ''; ?>" required>
                                     </div>
                                 </div>
                             </div>
@@ -165,11 +174,11 @@ if(isset($_GET['edit'])) {
                                     <div class="mb-3">
                                         <label class="form-label">Tipe Lokasi</label>
                                         <select class="form-control" name="tipe_lokasi" required>
-                                            <option value="Pos Pengamatan" <?php echo ($edit_data['Tipe_Lokasi'] ?? '') == 'Pos Pengamatan' ? 'selected' : ''; ?>>Pos Pengamatan</option>
-                                            <option value="Shelter" <?php echo ($edit_data['Tipe_Lokasi'] ?? '') == 'Shelter' ? 'selected' : ''; ?>>Shelter</option>
-                                            <option value="Gudang Logistik" <?php echo ($edit_data['Tipe_Lokasi'] ?? '') == 'Gudang Logistik' ? 'selected' : ''; ?>>Gudang Logistik</option>
-                                            <option value="Pos Kesehatan" <?php echo ($edit_data['Tipe_Lokasi'] ?? '') == 'Pos Kesehatan' ? 'selected' : ''; ?>>Pos Kesehatan</option>
-                                            <option value="Lainnya" <?php echo ($edit_data['Tipe_Lokasi'] ?? '') == 'Lainnya' ? 'selected' : ''; ?>>Lainnya</option>
+                                            <option value="Pos Pengamatan" <?php echo ($is_edit_mode && ($edit_data['Tipe_Lokasi'] ?? '') == 'Pos Pengamatan') ? 'selected' : ''; ?>>Pos Pengamatan</option>
+                                            <option value="Shelter" <?php echo ($is_edit_mode && ($edit_data['Tipe_Lokasi'] ?? '') == 'Shelter') ? 'selected' : ''; ?>>Shelter</option>
+                                            <option value="Gudang Logistik" <?php echo ($is_edit_mode && ($edit_data['Tipe_Lokasi'] ?? '') == 'Gudang Logistik') ? 'selected' : ''; ?>>Gudang Logistik</option>
+                                            <option value="Pos Kesehatan" <?php echo ($is_edit_mode && ($edit_data['Tipe_Lokasi'] ?? '') == 'Pos Kesehatan') ? 'selected' : ''; ?>>Pos Kesehatan</option>
+                                            <option value="Lainnya" <?php echo ($is_edit_mode && ($edit_data['Tipe_Lokasi'] ?? '') == 'Lainnya') ? 'selected' : ''; ?>>Lainnya</option>
                                         </select>
                                     </div>
                                 </div>
@@ -177,26 +186,26 @@ if(isset($_GET['edit'])) {
                                     <div class="mb-3">
                                         <label class="form-label">Koordinat</label>
                                         <input type="text" class="form-control" name="koordinat" 
-                                               value="<?php echo $edit_data['Koordinat'] ?? ''; ?>" placeholder="Contoh: -7.540,110.446" required>
+                                               value="<?php echo $is_edit_mode ? htmlspecialchars($edit_data['Koordinat'] ?? '') : ''; ?>" placeholder="Contoh: -7.540,110.446" required>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="mb-3">
                                         <label class="form-label">Kapasitas (orang)</label>
                                         <input type="number" class="form-control" name="kapasitas" 
-                                               value="<?php echo $edit_data['Kapasitas'] ?? ''; ?>" required>
+                                               value="<?php echo $is_edit_mode ? htmlspecialchars($edit_data['Kapasitas'] ?? '') : ''; ?>" required>
                                     </div>
                                 </div>
                             </div>
                             
                             <div class="mb-3">
                                 <label class="form-label">Fasilitas</label>
-                                <textarea class="form-control" name="fasilitas" rows="3" required><?php echo $edit_data['Fasilitas'] ?? ''; ?></textarea>
+                                <textarea class="form-control" name="fasilitas" rows="3" required><?php echo $is_edit_mode ? htmlspecialchars($edit_data['Fasilitas'] ?? '') : ''; ?></textarea>
                                 <div class="form-text">Sebutkan fasilitas yang tersedia (pisahkan dengan koma)</div>
                             </div>
                             
                             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                <?php if(isset($edit_data)): ?>
+                                <?php if($is_edit_mode): ?>
                                     <button type="submit" name="edit" class="btn btn-warning">Update Data</button>
                                     <a href="mitigasi.php" class="btn btn-secondary">Batal</a>
                                 <?php else: ?>
@@ -228,22 +237,18 @@ if(isset($_GET['edit'])) {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php 
-                                    // Reset pointer result mitigasi
-                                    mysqli_data_seek($result_mitigasi, 0);
-                                    while($row = mysqli_fetch_assoc($result_mitigasi)): 
-                                    ?>
+                                    <?php foreach($mitigasi_data as $row): ?>
                                     <tr>
                                         <td><?php echo $row['id_Mitigasi']; ?></td>
-                                        <td><?php echo $row['nama_gunung']; ?></td>
-                                        <td><?php echo $row['Nama_Pos']; ?></td>
+                                        <td><?php echo htmlspecialchars($row['nama_gunung']); ?></td>
+                                        <td><?php echo htmlspecialchars($row['Nama_Pos']); ?></td>
                                         <td>
-                                            <span class="badge bg-info"><?php echo $row['Tipe_Lokasi']; ?></span>
+                                            <span class="badge bg-info"><?php echo htmlspecialchars($row['Tipe_Lokasi']); ?></span>
                                         </td>
-                                        <td><?php echo $row['Koordinat']; ?></td>
+                                        <td><?php echo htmlspecialchars($row['Koordinat']); ?></td>
                                         <td><?php echo number_format($row['Kapasitas']); ?> orang</td>
                                         <td>
-                                            <small><?php echo $row['Fasilitas']; ?></small>
+                                            <small><?php echo htmlspecialchars($row['Fasilitas']); ?></small>
                                         </td>
                                         <td>
                                             <a href="mitigasi.php?edit=<?php echo $row['id_Mitigasi']; ?>" class="btn btn-warning btn-sm">
@@ -255,7 +260,7 @@ if(isset($_GET['edit'])) {
                                             </a>
                                         </td>
                                     </tr>
-                                    <?php endwhile; ?>
+                                    <?php endforeach; ?>
                                 </tbody>
                             </table>
                         </div>
