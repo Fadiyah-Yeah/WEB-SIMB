@@ -909,39 +909,38 @@ $eruptionData = getEruptionData();
                 </p>
             </div>
 
-            <div class="footer-section">
-                <h4>Navigasi</h4>
-                <ul class="footer-links">
-                    <li><a href="../index.html">Beranda</a></li>
-                    <li><a href="infogunung.php">Informasi Gunung</a></li>
-                    <li><a href="erupsi.php">Data Erupsi</a></li>
-                    <li><a href="../pengertian.html">Pengertian & Jenis</a></li>
-                    <li><a href="../MITIGASI/mitigasi.html">Mitigasi</a></li>
-                </ul>
-            </div>
+             <div class="footer-section">
+                    <h4>Navigasi</h4>
+                    <ul class="footer-links">
+                        <li><a href="gunung.html">Informasi Gunung</a></li>
+                        <li><a href="../dampak.html">Dampak Erupsi</a></li>
+                        <li><a href="../MITIGASI/mitigasi.html">Mitigasi Bencana</a></li>
+                        <li><a href="../pengertian.html">Pengertian & Jenis</a></li>
+                    </ul>
+                </div>
 
-            <div class="footer-section">
-                <h4>Layanan</h4>
-                <ul class="footer-links">
-                    <li><a href="infogunung.php">Data Gunung</a></li>
-                    <li><a href="erupsi.php">Riwayat Erupsi</a></li>
-                    <li><a href="logistik_mitigasi.php">Logistik</a></li>
-                    <li><a href="#peta">Peta Kawasan</a></li>
-                    <li><a href="#peringatan">Peringatan Dini</a></li>
-                </ul>
-            </div>
+                <!-- Resources -->
+                <div class="footer-section">
+                    <h4>Sumber Daya</h4>
+                    <ul class="footer-links">
+                        <li><a href="../MITIGASI/mitigasi.html">Panduan Evakuasi</a></li>
+                        <li><a href="../MITIGASI/mitigasi.html">Edukasi Bencana</a></li>
+                        <li><a href="gunung.html">Data & Statistik</a></li>
+                        <li><a href=""></a></li>
+                    </ul>
+                </div>
 
-            <div class="footer-section">
-                <h4>Kontak</h4>
-                <ul class="footer-links">
-                    <li>Jl. Vulkanologi No. 123</li>
-                    <li>Jakarta, Indonesia</li>
-                    <li>info@magmacare.id</li>
-                    <li>+62 21 1234 5678</li>
-                    <li>24/7 Emergency Hotline</li>
-                </ul>
+                <!-- Contact -->
+               <div class="footer-section">
+                    <h4>Sumber Informasi Resmi</h4>
+                    <ul class="footer-links">
+                        <!-- <li>Email: info@magmacare.id</li> -->
+                        <li><a href="https://www.bnpb.go.id/">BNPB</a></li>
+                        <li><a href="https://www.bmkg.go.id/">BMKG</a></li>
+                        <li><a href="https://magma.esdm.go.id/">PVMBG</a></li>
+                    </ul>
+                </div>
             </div>
-        </div>
 
         <div class="footer-bottom">
             <p>&copy; 2025 MagmaCare - Sistem Informasi Gunung Berapi. All rights reserved.</p>
